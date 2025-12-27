@@ -5,6 +5,10 @@ import ONTManagement from './pages/ONTManagement';
 import Tickets from './pages/Tickets';
 import Billing from './pages/Billing';
 import WorkOrders from './pages/WorkOrders';
+import ServicePlans from './pages/ServicePlans';
+import Inventory from './pages/Inventory';
+import Alerts from './pages/Alerts';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -16,6 +20,10 @@ export const PAGES = {
     "Tickets": Tickets,
     "Billing": Billing,
     "WorkOrders": WorkOrders,
+    "ServicePlans": ServicePlans,
+    "Inventory": Inventory,
+    "Alerts": Alerts,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {
