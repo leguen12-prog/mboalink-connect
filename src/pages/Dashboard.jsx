@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from '@/components/i18n/LanguageContext';
 import { motion } from 'framer-motion';
 import { 
   Users, Wifi, CreditCard, AlertTriangle, 
@@ -16,8 +15,6 @@ import StatusBadge from '@/components/ui/StatusBadge';
 import { formatDistanceToNow } from 'date-fns';
 
 export default function Dashboard() {
-  const { t } = useTranslation();
-  
   const { data: customers = [] } = useQuery({
     queryKey: ['customers'],
     queryFn: () => base44.entities.Customer.list('-created_date', 100),
@@ -75,47 +72,47 @@ export default function Dashboard() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-2xl lg:text-3xl font-bold text-white">{t('dashboard.title')}</h1>
-        <p className="text-slate-400 mt-1">{t('dashboard.subtitle')}</p>
+        <h1 className="text-2xl lg:text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-slate-400 mt-1">Welcome to MBOALINK OSS/BSS Platform</p>
       </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         <StatsCard
-          title={t('dashboard.active_customers')}
+          title="Active Customers"
           value={activeCustomers.toLocaleString()}
           icon={Users}
           trendValue="+12%"
-          trendLabel={t('dashboard.vs_last_month')}
+          trendLabel="vs last month"
           trend="up"
           iconColor="text-blue-400"
           bgColor="from-blue-500/10 to-blue-600/5"
         />
         <StatsCard
-          title={t('dashboard.online_onts')}
+          title="Online ONTs"
           value={onlineOnts.toLocaleString()}
           icon={Wifi}
           trendValue={`${onts.length > 0 ? ((onlineOnts/onts.length)*100).toFixed(1) : 0}%`}
-          trendLabel={t('dashboard.uptime')}
+          trendLabel="uptime"
           trend="up"
           iconColor="text-emerald-400"
           bgColor="from-emerald-500/10 to-emerald-600/5"
         />
         <StatsCard
-          title={t('dashboard.monthly_revenue')}
+          title="Monthly Revenue"
           value={`${(monthlyRevenue / 1000).toFixed(0)}K XAF`}
           icon={CreditCard}
           trendValue="+8.5%"
-          trendLabel={t('dashboard.vs_last_month')}
+          trendLabel="vs last month"
           trend="up"
           iconColor="text-amber-400"
           bgColor="from-amber-500/10 to-amber-600/5"
         />
         <StatsCard
-          title={t('dashboard.open_tickets')}
+          title="Open Tickets"
           value={openTickets.toString()}
           icon={AlertTriangle}
-          trendValue={criticalAlerts > 0 ? `${criticalAlerts} ${t('dashboard.critical')}` : t('dashboard.all_normal')}
+          trendValue={criticalAlerts > 0 ? `${criticalAlerts} critical` : 'All normal'}
           trend={criticalAlerts > 0 ? 'down' : 'up'}
           iconColor="text-red-400"
           bgColor="from-red-500/10 to-red-600/5"
@@ -145,14 +142,14 @@ export default function Dashboard() {
           className="rounded-2xl bg-slate-900/50 border border-slate-800/50 p-6"
         >
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-lg font-semibold text-white">{t('dashboard.active_alerts')}</h3>
-            <span className="text-sm text-slate-500">{alerts.length} {t('network.total')}</span>
+            <h3 className="text-lg font-semibold text-white">Active Alerts</h3>
+            <span className="text-sm text-slate-500">{alerts.length} total</span>
           </div>
 
           {alerts.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
               <Activity className="w-10 h-10 mx-auto mb-2 opacity-50" />
-              <p>{t('alerts.no_alerts')}</p>
+              <p>No active alerts</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -193,21 +190,21 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent border border-amber-500/20 p-6"
       >
-        <h3 className="text-lg font-semibold text-white mb-4">{t('dashboard.quick_actions')}</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { labelKey: 'dashboard.add_customer', icon: Users, color: 'text-blue-400' },
-            { labelKey: 'dashboard.provision_ont', icon: Wifi, color: 'text-emerald-400' },
-            { labelKey: 'dashboard.create_ticket', icon: AlertTriangle, color: 'text-amber-400' },
-            { labelKey: 'dashboard.view_reports', icon: TrendingUp, color: 'text-purple-400' },
+            { label: 'Add Customer', icon: Users, color: 'text-blue-400' },
+            { label: 'Provision ONT', icon: Wifi, color: 'text-emerald-400' },
+            { label: 'Create Ticket', icon: AlertTriangle, color: 'text-amber-400' },
+            { label: 'View Reports', icon: TrendingUp, color: 'text-purple-400' },
           ].map((action) => (
             <button
-              key={action.labelKey}
+              key={action.label}
               className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 transition-all group"
             >
               <action.icon className={`w-5 h-5 ${action.color}`} />
               <span className="text-sm font-medium text-slate-300 group-hover:text-white">
-                {t(action.labelKey)}
+                {action.label}
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-400 transition-colors" />
             </button>

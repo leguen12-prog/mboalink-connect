@@ -20,8 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from '@/components/i18n/LanguageContext';
-import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 
 const navItems = [
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
@@ -47,7 +45,6 @@ const navItems = [
 ];
 
 export default function Layout({ children, currentPageName }) {
-  const { t, language, changeLanguage } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState({});
@@ -64,10 +61,6 @@ export default function Layout({ children, currentPageName }) {
     try {
       const userData = await base44.auth.me();
       setUser(userData);
-      // Set language from user preference
-      if (userData.preferred_language && userData.preferred_language !== language) {
-        changeLanguage(userData.preferred_language);
-      }
     } catch (e) {
       console.log('User not logged in');
     }
@@ -90,12 +83,6 @@ export default function Layout({ children, currentPageName }) {
     base44.auth.logout();
   };
 
-  const getNavItemName = (item) => {
-    const key = item.page ? `nav.${item.page.toLowerCase().replace(/([A-Z])/g, '_$1').toLowerCase()}` : null;
-    if (key && t(key) !== key) return t(key);
-    return item.name;
-  };
-
   const NavItem = ({ item, isNested = false }) => {
     const isActive = currentPageName === item.page;
     const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -111,7 +98,7 @@ export default function Layout({ children, currentPageName }) {
           >
             <div className="flex items-center gap-3">
               <item.icon className="w-5 h-5" />
-              {sidebarOpen && <span className="text-sm font-medium">{t('nav.network')}</span>}
+              {sidebarOpen && <span className="text-sm font-medium">{item.name}</span>}
             </div>
             {sidebarOpen && (
               <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -134,7 +121,7 @@ export default function Layout({ children, currentPageName }) {
                         ? 'bg-gradient-to-r from-amber-600/20 to-amber-500/10 text-amber-400 border-l-2 border-amber-500' 
                         : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}
                   >
-                    {getNavItemName(subItem)}
+                    {subItem.name}
                   </Link>
                 ))}
               </motion.div>
@@ -153,7 +140,7 @@ export default function Layout({ children, currentPageName }) {
             : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}
       >
         <item.icon className={`w-5 h-5 ${isActive ? 'text-amber-400' : ''}`} />
-        {sidebarOpen && <span className="text-sm font-medium">{getNavItemName(item)}</span>}
+        {sidebarOpen && <span className="text-sm font-medium">{item.name}</span>}
       </Link>
     );
   };
@@ -283,7 +270,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="hidden sm:flex relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <Input 
-                placeholder={t('common.search') + '...'} 
+                placeholder="Search customers, ONTs, tickets..." 
                 className="w-64 lg:w-80 pl-10 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 focus:border-amber-500/50"
               />
             </div>
@@ -304,22 +291,19 @@ export default function Layout({ children, currentPageName }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-80 bg-slate-900 border-slate-800">
                 <div className="p-3 border-b border-slate-800">
-                  <h4 className="font-semibold text-white">{t('common.notifications')}</h4>
+                  <h4 className="font-semibold text-white">Notifications</h4>
                 </div>
                 <div className="p-3 text-sm text-slate-400 text-center">
-                  {alertCount > 0 ? `${alertCount} ${t('alerts.active_alerts').toLowerCase()}` : t('dashboard.no_notifications')}
+                  {alertCount > 0 ? `${alertCount} active alerts` : 'No new notifications'}
                 </div>
                 <DropdownMenuSeparator className="bg-slate-800" />
                 <DropdownMenuItem asChild>
                   <Link to={createPageUrl('Alerts')} className="text-amber-400 cursor-pointer">
-                    {t('dashboard.view_all_alerts')}
+                    View all alerts
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* Language Switcher */}
-            <LanguageSwitcher />
 
             {/* Help */}
             <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
@@ -346,13 +330,13 @@ export default function Layout({ children, currentPageName }) {
                 <DropdownMenuItem asChild>
                   <Link to={createPageUrl('Settings')} className="cursor-pointer">
                     <Settings className="w-4 h-4 mr-2" />
-                    {t('common.settings')}
+                    Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-slate-800" />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-400 cursor-pointer">
                   <LogOut className="w-4 h-4 mr-2" />
-                  {t('common.logout')}
+                  Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
