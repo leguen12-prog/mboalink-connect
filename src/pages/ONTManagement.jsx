@@ -33,6 +33,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from '@/components/ui/PageHeader';
 import DataTable from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
+import PredictiveAnalysisRunner from '@/components/ai/PredictiveAnalysisRunner';
+import MetricsCollector from '@/components/ai/MetricsCollector';
 import { format } from 'date-fns';
 
 export default function ONTManagement() {
@@ -232,6 +234,7 @@ export default function ONTManagement() {
         actionLabel="Add ONT"
         actionIcon={Plus}
       >
+        <MetricsCollector devices={onts} deviceType="ont" />
         <Button variant="outline" className="border-slate-700 text-slate-300">
           <RefreshCw className="w-4 h-4 mr-2" /> Sync All
         </Button>
@@ -469,7 +472,7 @@ export default function ONTManagement() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="config" className="mt-4">
+              <TabsContent value="config" className="mt-4 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 rounded-xl bg-slate-800/30">
                     <p className="text-sm text-slate-500 mb-1">VLAN ID</p>
@@ -495,6 +498,15 @@ export default function ONTManagement() {
                     <p className="text-sm text-slate-500 mb-1">WiFi Enabled</p>
                     <p className="text-white">{selectedOnt.wifi_enabled ? 'Yes' : 'No'}</p>
                   </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20">
+                  <p className="text-sm text-purple-400 font-medium mb-3">AI Predictive Analysis</p>
+                  <PredictiveAnalysisRunner
+                    deviceType="ont"
+                    deviceId={selectedOnt.id}
+                    deviceName={selectedOnt.serial_number}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

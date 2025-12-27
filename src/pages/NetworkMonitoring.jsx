@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { 
   Activity, Wifi, WifiOff, Server, AlertTriangle,
-  TrendingUp, Clock, RefreshCw, Zap, ThermometerSun
+  TrendingUp, Clock, RefreshCw, Zap, ThermometerSun,
+  Brain, ArrowRight
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -31,6 +34,12 @@ export default function NetworkMonitoring() {
     queryKey: ['alerts'],
     queryFn: () => base44.entities.NetworkAlert.filter({ status: 'active' }),
     refetchInterval: autoRefresh ? 10000 : false
+  });
+
+  const { data: predictions = [] } = useQuery({
+    queryKey: ['predictions'],
+    queryFn: () => base44.entities.PredictiveMaintenance.filter({ status: 'active' }),
+    refetchInterval: autoRefresh ? 30000 : false
   });
 
   const handleRefresh = () => {
@@ -358,6 +367,61 @@ export default function NetworkMonitoring() {
                       backgroundColor: item.color 
                     }}
                   />
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* AI Predictive Insights */}
+      {predictions.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 border border-purple-500/20 p-6"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-purple-500/10">
+                <Brain className="w-6 h-6 text-purple-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">AI Predictive Alerts</h3>
+                <p className="text-sm text-slate-400">{predictions.length} devices require attention</p>
+              </div>
+            </div>
+            <Link to={createPageUrl('PredictiveMaintenance')}>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+              >
+                View All <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {predictions.slice(0, 3).map((pred) => (
+              <div 
+                key={pred.id}
+                className="p-4 rounded-xl bg-slate-900/50 border border-slate-700/50"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className="font-medium text-white text-sm">
+                      {pred.device_type === 'olt' 
+                        ? olts.find(o => o.id === pred.device_id)?.name 
+                        : onts.find(o => o.id === pred.device_id)?.serial_number}
+                    </p>
+                    <p className="text-xs text-slate-500 capitalize">{pred.prediction_type.replace(/_/g, ' ')}</p>
+                  </div>
+                  <StatusBadge status={pred.risk_level} className="text-xs" />
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock className="w-4 h-4 text-amber-400" />
+                  <span className="text-slate-400">In {pred.days_until_failure} days</span>
                 </div>
               </div>
             ))}

@@ -33,6 +33,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from '@/components/ui/PageHeader';
 import StatusBadge from '@/components/ui/StatusBadge';
+import PredictiveAnalysisRunner from '@/components/ai/PredictiveAnalysisRunner';
+import MetricsCollector from '@/components/ai/MetricsCollector';
 import { format } from 'date-fns';
 
 export default function OLTManagement() {
@@ -111,7 +113,9 @@ export default function OLTManagement() {
         action={() => setShowAddDialog(true)}
         actionLabel="Add OLT"
         actionIcon={Plus}
-      />
+      >
+        <MetricsCollector devices={olts} deviceType="olt" />
+      </PageHeader>
 
       {/* Search */}
       <div className="flex gap-4">
@@ -419,7 +423,7 @@ export default function OLTManagement() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="metrics" className="mt-4">
+              <TabsContent value="metrics" className="mt-4 space-y-4">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="p-4 rounded-xl bg-slate-800/30">
                     <div className="flex items-center gap-2 mb-2">
@@ -444,6 +448,15 @@ export default function OLTManagement() {
                     </div>
                     <p className="text-2xl font-bold text-white">{selectedOlt.temperature_celsius || 0}°C</p>
                   </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20">
+                  <p className="text-sm text-purple-400 font-medium mb-3">AI Predictive Analysis</p>
+                  <PredictiveAnalysisRunner
+                    deviceType="olt"
+                    deviceId={selectedOlt.id}
+                    deviceName={selectedOlt.name}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

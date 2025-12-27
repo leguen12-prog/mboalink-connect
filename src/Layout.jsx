@@ -40,6 +40,7 @@ const navItems = [
   { name: 'Work Orders', icon: Wrench, page: 'WorkOrders' },
   { name: 'Inventory', icon: Package, page: 'Inventory' },
   { name: 'Alerts', icon: AlertTriangle, page: 'Alerts' },
+  { name: 'AI Predictions', icon: Bell, page: 'PredictiveMaintenance' },
   { name: 'Settings', icon: Settings, page: 'Settings' },
 ];
 
