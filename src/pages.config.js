@@ -11,6 +11,7 @@ import Alerts from './pages/Alerts';
 import Settings from './pages/Settings';
 import NetworkMonitoring from './pages/NetworkMonitoring';
 import NetworkMap from './pages/NetworkMap';
+import PredictiveMaintenance from './pages/PredictiveMaintenance';
 import __Layout from './Layout.jsx';
 
 
@@ -28,6 +29,7 @@ export const PAGES = {
     "Settings": Settings,
     "NetworkMonitoring": NetworkMonitoring,
     "NetworkMap": NetworkMap,
+    "PredictiveMaintenance": PredictiveMaintenance,
 }
 
 export const pagesConfig = {
