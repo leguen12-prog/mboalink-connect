@@ -5,8 +5,9 @@ import { motion } from 'framer-motion';
 import { 
   AlertTriangle, AlertCircle, Info, CheckCircle,
   Bell, BellOff, Filter, Search, MoreVertical,
-  Eye, Check, Trash2, Bot, RefreshCw
+  Eye, Check, Trash2, Bot, RefreshCw, Brain
 } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,6 +32,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PageHeader from '@/components/ui/PageHeader';
 import StatusBadge from '@/components/ui/StatusBadge';
+import AiInsightsPanel from '@/components/ai/AiInsightsPanel';
 import { formatDistanceToNow, format } from 'date-fns';
 
 const severityConfig = {
@@ -47,6 +49,8 @@ export default function Alerts() {
   const [searchTerm, setSearchTerm] = useState('');
   const [severityFilter, setSeverityFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('active');
+  const [showAiPanel, setShowAiPanel] = useState(false);
+  const [aiContext, setAiContext] = useState(null);
 
   const queryClient = useQueryClient();
 
@@ -182,10 +186,27 @@ export default function Alerts() {
         title="Network Alerts" 
         subtitle={`${alerts.filter(a => a.status === 'active').length} active alerts`}
       >
+        <Button 
+          variant="outline" 
+          className="border-purple-500/30 text-purple-400"
+          onClick={() => setShowAiPanel(true)}
+        >
+          <Bot className="w-4 h-4 mr-2" /> Ask AI
+        </Button>
         <Button variant="outline" className="border-slate-700 text-slate-300">
           <RefreshCw className="w-4 h-4 mr-2" /> Refresh
         </Button>
       </PageHeader>
+
+      {/* AI Panel */}
+      <AnimatePresence>
+        {showAiPanel && (
+          <AiInsightsPanel
+            context={aiContext}
+            onClose={() => setShowAiPanel(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">

@@ -10,6 +10,7 @@ import StatsCard from '@/components/ui/StatsCard';
 import NetworkHealthCard from '@/components/dashboard/NetworkHealthCard';
 import RecentTicketsCard from '@/components/dashboard/RecentTicketsCard';
 import RevenueChart from '@/components/dashboard/RevenueChart';
+import PredictiveInsightsCard from '@/components/dashboard/PredictiveInsightsCard';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -42,6 +43,11 @@ export default function Dashboard() {
   const { data: payments = [] } = useQuery({
     queryKey: ['payments'],
     queryFn: () => base44.entities.Payment.filter({ status: 'completed' }),
+  });
+
+  const { data: predictions = [] } = useQuery({
+    queryKey: ['predictions'],
+    queryFn: () => base44.entities.PredictiveMaintenance.filter({ status: 'active' }),
   });
 
   // Calculate stats
@@ -124,8 +130,12 @@ export default function Dashboard() {
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RecentTicketsCard tickets={tickets} />
-        
-        {/* Recent Alerts */}
+        <PredictiveInsightsCard predictions={predictions} />
+      </div>
+
+      {/* Alerts Row */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Active Alerts */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
