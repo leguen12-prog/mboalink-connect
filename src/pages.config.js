@@ -9,6 +9,8 @@ import ServicePlans from './pages/ServicePlans';
 import Inventory from './pages/Inventory';
 import Alerts from './pages/Alerts';
 import Settings from './pages/Settings';
+import NetworkMonitoring from './pages/NetworkMonitoring';
+import NetworkMap from './pages/NetworkMap';
 import __Layout from './Layout.jsx';
 
 
@@ -24,6 +26,8 @@ export const PAGES = {
     "Inventory": Inventory,
     "Alerts": Alerts,
     "Settings": Settings,
+    "NetworkMonitoring": NetworkMonitoring,
+    "NetworkMap": NetworkMap,
 }
 
 export const pagesConfig = {
