@@ -12,6 +12,7 @@ import Settings from './pages/Settings';
 import NetworkMonitoring from './pages/NetworkMonitoring';
 import NetworkMap from './pages/NetworkMap';
 import PredictiveMaintenance from './pages/PredictiveMaintenance';
+import DashboardTranslated from './pages/DashboardTranslated';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +31,7 @@ export const PAGES = {
     "NetworkMonitoring": NetworkMonitoring,
     "NetworkMap": NetworkMap,
     "PredictiveMaintenance": PredictiveMaintenance,
+    "DashboardTranslated": DashboardTranslated,
 }
 
 export const pagesConfig = {
