@@ -17,6 +17,7 @@ import PredictiveMaintenanceGIS from '../components/gis/analytics/PredictiveMain
 import NetworkSimulator from '../components/gis/analytics/NetworkSimulator';
 import CAPEXScenarioModeler from '../components/gis/analytics/CAPEXScenarioModeler';
 import CapexOptimizer from '../components/gis/analytics/CapexOptimizer';
+import AssetManagement from '../components/gis/AssetManagement';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 
@@ -171,6 +172,10 @@ export default function GISDashboard() {
             <Activity className="w-4 h-4 mr-2" />
             Simulation
           </TabsTrigger>
+          <TabsTrigger value="assets">
+            <Database className="w-4 h-4 mr-2" />
+            Asset Management
+          </TabsTrigger>
           <TabsTrigger value="layers">
             <Layers className="w-4 h-4 mr-2" />
             Layers
@@ -304,6 +309,10 @@ export default function GISDashboard() {
               </div>
             )}
           </Card>
+        </TabsContent>
+
+        <TabsContent value="assets" className="mt-4">
+          <AssetManagement />
         </TabsContent>
 
         <TabsContent value="layers" className="mt-4">
