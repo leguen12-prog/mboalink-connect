@@ -10,6 +10,7 @@ import JobMap from '../components/technician/JobMap';
 import JobCard from '../components/technician/JobCard';
 import JobDetailsDialog from '../components/technician/JobDetailsDialog';
 import NOCChat from '../components/technician/NOCChat';
+import RouteOptimizer from '../components/technician/RouteOptimizer';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 
@@ -19,6 +20,7 @@ export default function TechnicianApp() {
   const [chatOpen, setChatOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [offlineQueue, setOfflineQueue] = useState([]);
+  const [optimizedRoute, setOptimizedRoute] = useState(null);
   const queryClient = useQueryClient();
 
   // Monitor online/offline status
@@ -168,6 +170,27 @@ export default function TechnicianApp() {
 
   const completedJobs = displayOrders.filter(wo => wo.status === 'completed');
 
+  const handleRouteOptimized = (routeData) => {
+    setOptimizedRoute(routeData);
+    // Store optimized route in localStorage for offline access
+    localStorage.setItem('optimizedRoute', JSON.stringify(routeData));
+  };
+
+  // Get jobs to display based on optimized route or default
+  const getJobsForDisplay = (jobList) => {
+    if (!optimizedRoute) return jobList;
+    
+    // If we have an optimized route, sort jobs by optimized order
+    const optimizedJobIds = optimizedRoute.jobs.map(j => j.id);
+    return jobList.sort((a, b) => {
+      const aIndex = optimizedJobIds.indexOf(a.id);
+      const bIndex = optimizedJobIds.indexOf(b.id);
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+      return aIndex - bIndex;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 pb-20">
       <PageHeader 
@@ -273,22 +296,32 @@ export default function TechnicianApp() {
             <TabsTrigger value="completed">Completed ({completedJobs.length})</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="map" className="mt-4">
+          <TabsContent value="map" className="mt-4 space-y-4">
+            <RouteOptimizer
+              jobs={todayJobs.length > 0 ? todayJobs : scheduledJobs}
+              technicianLocation={technicianData?.current_location}
+              onRouteOptimized={handleRouteOptimized}
+            />
             <JobMap 
-              jobs={displayOrders} 
+              jobs={optimizedRoute ? optimizedRoute.jobs : displayOrders} 
               onJobClick={handleViewDetails}
               technicianLocation={technicianData?.current_location}
             />
           </TabsContent>
 
-          <TabsContent value="today" className="mt-4">
+          <TabsContent value="today" className="mt-4 space-y-4">
+            <RouteOptimizer
+              jobs={todayJobs}
+              technicianLocation={technicianData?.current_location}
+              onRouteOptimized={handleRouteOptimized}
+            />
             <div className="grid gap-4">
               {todayJobs.length === 0 ? (
                 <div className="text-center py-12 text-slate-500">
                   No jobs scheduled for today
                 </div>
               ) : (
-                todayJobs.map(job => (
+                getJobsForDisplay(todayJobs).map((job, idx) => (
                   <JobCard
                     key={job.id}
                     job={job}
