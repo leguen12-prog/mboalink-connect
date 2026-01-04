@@ -12,6 +12,10 @@ import { GISService } from '../components/gis/GISService';
 import DemandPrediction from '../components/gis/analytics/DemandPrediction';
 import ExpansionPlanner from '../components/gis/analytics/ExpansionPlanner';
 import AnalyticsHeatmap from '../components/gis/analytics/AnalyticsHeatmap';
+import TrendAnalysis from '../components/gis/analytics/TrendAnalysis';
+import PredictiveMaintenanceGIS from '../components/gis/analytics/PredictiveMaintenanceGIS';
+import NetworkSimulator from '../components/gis/analytics/NetworkSimulator';
+import CapexOptimizer from '../components/gis/analytics/CapexOptimizer';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 
@@ -162,6 +166,10 @@ export default function GISDashboard() {
             <Search className="w-4 h-4 mr-2" />
             Serviceability
           </TabsTrigger>
+          <TabsTrigger value="simulation">
+            <Activity className="w-4 h-4 mr-2" />
+            Simulation
+          </TabsTrigger>
           <TabsTrigger value="layers">
             <Layers className="w-4 h-4 mr-2" />
             Layers
@@ -209,13 +217,26 @@ export default function GISDashboard() {
 
         <TabsContent value="demand" className="mt-4">
           <div className="grid lg:grid-cols-2 gap-4">
-            <DemandPrediction 
-              onPredictionComplete={(zones) => setDemandZones(zones)}
-            />
-            <ExpansionPlanner 
-              demandZones={demandZones}
-              onPlanGenerated={(plan) => setExpansionPlan(plan)}
-            />
+            <div className="space-y-4">
+              <DemandPrediction 
+                onPredictionComplete={(zones) => setDemandZones(zones)}
+              />
+              <TrendAnalysis />
+            </div>
+            <div className="space-y-4">
+              <ExpansionPlanner 
+                demandZones={demandZones}
+                onPlanGenerated={(plan) => setExpansionPlan(plan)}
+              />
+              <PredictiveMaintenanceGIS />
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="simulation" className="mt-4">
+          <div className="grid lg:grid-cols-2 gap-4">
+            <NetworkSimulator />
+            <CapexOptimizer />
           </div>
         </TabsContent>
 
