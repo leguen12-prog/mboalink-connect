@@ -13,6 +13,7 @@ import Settings from './pages/Settings';
 import Tickets from './pages/Tickets';
 import WorkOrders from './pages/WorkOrders';
 import TechnicianApp from './pages/TechnicianApp';
+import GISDashboard from './pages/GISDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -32,6 +33,7 @@ export const PAGES = {
     "Tickets": Tickets,
     "WorkOrders": WorkOrders,
     "TechnicianApp": TechnicianApp,
+    "GISDashboard": GISDashboard,
 }
 
 export const pagesConfig = {
