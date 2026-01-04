@@ -8,6 +8,8 @@ import { Card } from "@/components/ui/card";
 import { Map, Layers, Search, Navigation, MapPin, Activity, TrendingUp, Database, Brain, BarChart3 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import GISMapCore from '../components/gis/GISMapCore';
+import EnhancedGISMap from '../components/gis/EnhancedGISMap';
+import GeofenceManagement from '../components/gis/GeofenceManagement';
 import { GISService } from '../components/gis/GISService';
 import DemandPrediction from '../components/gis/analytics/DemandPrediction';
 import ExpansionPlanner from '../components/gis/analytics/ExpansionPlanner';
@@ -189,11 +191,15 @@ export default function GISDashboard() {
 
         <TabsContent value="map" className="mt-4">
           <Card className="bg-slate-900/50 border-slate-800 p-4">
-            <GISMapCore
+            <EnhancedGISMap
               onAssetClick={setSelectedAsset}
               height="700px"
             />
           </Card>
+          
+          <div className="mt-4">
+            <GeofenceManagement />
+          </div>
 
           {selectedAsset && (
             <Card className="bg-slate-900/50 border-slate-800 p-4 mt-4">
