@@ -11,6 +11,9 @@ import JobCard from '../components/technician/JobCard';
 import JobDetailsDialog from '../components/technician/JobDetailsDialog';
 import NOCChat from '../components/technician/NOCChat';
 import RouteOptimizer from '../components/technician/RouteOptimizer';
+import AIScheduler from '../components/technician/AIScheduler';
+import TaskPrioritizer from '../components/technician/TaskPrioritizer';
+import AutomatedCommunications from '../components/technician/AutomatedCommunications';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 
@@ -21,6 +24,7 @@ export default function TechnicianApp() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [offlineQueue, setOfflineQueue] = useState([]);
   const [optimizedRoute, setOptimizedRoute] = useState(null);
+  const [aiSchedule, setAISchedule] = useState(null);
   const queryClient = useQueryClient();
 
   // Monitor online/offline status
@@ -297,24 +301,48 @@ export default function TechnicianApp() {
           </TabsList>
 
           <TabsContent value="map" className="mt-4 space-y-4">
-            <RouteOptimizer
-              jobs={todayJobs.length > 0 ? todayJobs : scheduledJobs}
-              technicianLocation={technicianData?.current_location}
-              onRouteOptimized={handleRouteOptimized}
-            />
-            <JobMap 
-              jobs={optimizedRoute ? optimizedRoute.jobs : displayOrders} 
-              onJobClick={handleViewDetails}
-              technicianLocation={technicianData?.current_location}
-            />
+            <div className="grid lg:grid-cols-3 gap-4">
+              <div className="lg:col-span-2 space-y-4">
+                <RouteOptimizer
+                  jobs={todayJobs.length > 0 ? todayJobs : scheduledJobs}
+                  technicianLocation={technicianData?.current_location}
+                  onRouteOptimized={handleRouteOptimized}
+                />
+                <JobMap 
+                  jobs={optimizedRoute ? optimizedRoute.jobs : displayOrders} 
+                  onJobClick={handleViewDetails}
+                  technicianLocation={technicianData?.current_location}
+                />
+              </div>
+              <div className="space-y-4">
+                <AIScheduler
+                  technicianId={technicianData?.technician_id}
+                  jobs={todayJobs.length > 0 ? todayJobs : scheduledJobs}
+                  onScheduleUpdate={(schedule) => setAISchedule(schedule)}
+                />
+                <TaskPrioritizer
+                  jobs={displayOrders}
+                  technicianLocation={technicianData?.current_location}
+                />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="today" className="mt-4 space-y-4">
-            <RouteOptimizer
-              jobs={todayJobs}
-              technicianLocation={technicianData?.current_location}
-              onRouteOptimized={handleRouteOptimized}
-            />
+            <div className="grid lg:grid-cols-3 gap-4 mb-4">
+              <div className="lg:col-span-2">
+                <RouteOptimizer
+                  jobs={todayJobs}
+                  technicianLocation={technicianData?.current_location}
+                  onRouteOptimized={handleRouteOptimized}
+                />
+              </div>
+              <AIScheduler
+                technicianId={technicianData?.technician_id}
+                jobs={todayJobs}
+                onScheduleUpdate={(schedule) => setAISchedule(schedule)}
+              />
+            </div>
             <div className="grid gap-4">
               {todayJobs.length === 0 ? (
                 <div className="text-center py-12 text-slate-500">
