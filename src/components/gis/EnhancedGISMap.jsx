@@ -67,8 +67,7 @@ function DrawingTools({ onDrawCreated }) {
           circlemarker: false
         }}
         edit={{
-          edit: true,
-          remove: true
+          featureGroup: featureGroupRef.current
         }}
       />
     </FeatureGroup>
