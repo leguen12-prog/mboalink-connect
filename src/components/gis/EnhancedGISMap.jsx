@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Polygon, LayersControl, FeatureGroup, useMap } from 'react-leaflet';
-import { FeatureGroup as LeafletFeatureGroup } from 'leaflet';
-import { EditControl } from 'react-leaflet-draw';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -11,6 +9,7 @@ import { toast } from 'sonner';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import L from 'leaflet';
+import 'leaflet-draw';
 
 // Fix default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -39,39 +38,45 @@ const createAssetIcon = (type, status) => {
 
 function DrawingTools({ onDrawCreated }) {
   const map = useMap();
-  const featureGroupRef = useRef(new LeafletFeatureGroup());
 
   useEffect(() => {
-    const fg = featureGroupRef.current;
-    if (map && !map.hasLayer(fg)) {
-      map.addLayer(fg);
-    }
-    return () => {
-      if (map && map.hasLayer(fg)) {
-        map.removeLayer(fg);
-      }
-    };
-  }, [map]);
+    if (!map) return;
 
-  return (
-    <FeatureGroup ref={featureGroupRef}>
-      <EditControl
-        position="topleft"
-        onCreated={onDrawCreated}
-        draw={{
-          rectangle: true,
-          polygon: true,
-          circle: true,
-          polyline: true,
-          marker: true,
-          circlemarker: false
-        }}
-        edit={{
-          featureGroup: featureGroupRef.current
-        }}
-      />
-    </FeatureGroup>
-  );
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    const drawControl = new L.Control.Draw({
+      position: 'topleft',
+      draw: {
+        polygon: true,
+        polyline: true,
+        rectangle: true,
+        circle: true,
+        marker: true,
+        circlemarker: false
+      },
+      edit: {
+        featureGroup: drawnItems,
+        remove: true
+      }
+    });
+
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, (e) => {
+      const layer = e.layer;
+      drawnItems.addLayer(layer);
+      onDrawCreated(e);
+    });
+
+    return () => {
+      map.removeControl(drawControl);
+      map.removeLayer(drawnItems);
+      map.off(L.Draw.Event.CREATED);
+    };
+  }, [map, onDrawCreated]);
+
+  return null;
 }
 
 export default function EnhancedGISMap({ 
