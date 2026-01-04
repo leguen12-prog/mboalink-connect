@@ -235,9 +235,12 @@ export default function GISDashboard() {
         </TabsContent>
 
         <TabsContent value="simulation" className="mt-4">
-          <div className="grid lg:grid-cols-2 gap-4">
-            <NetworkSimulator />
-            <CapexOptimizer />
+          <div className="space-y-6">
+            <CAPEXScenarioModeler />
+            <div className="grid lg:grid-cols-2 gap-4">
+              <NetworkSimulator />
+              <CapexOptimizer />
+            </div>
           </div>
         </TabsContent>
 
