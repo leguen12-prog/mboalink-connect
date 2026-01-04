@@ -15,6 +15,7 @@ import AnalyticsHeatmap from '../components/gis/analytics/AnalyticsHeatmap';
 import TrendAnalysis from '../components/gis/analytics/TrendAnalysis';
 import PredictiveMaintenanceGIS from '../components/gis/analytics/PredictiveMaintenanceGIS';
 import NetworkSimulator from '../components/gis/analytics/NetworkSimulator';
+import CAPEXScenarioModeler from '../components/gis/analytics/CAPEXScenarioModeler';
 import CapexOptimizer from '../components/gis/analytics/CapexOptimizer';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
