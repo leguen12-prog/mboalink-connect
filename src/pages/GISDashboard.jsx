@@ -5,10 +5,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Map, Layers, Search, Navigation, MapPin, Activity, TrendingUp, Database } from 'lucide-react';
+import { Map, Layers, Search, Navigation, MapPin, Activity, TrendingUp, Database, Brain, BarChart3 } from 'lucide-react';
 import PageHeader from '../components/ui/PageHeader';
 import GISMapCore from '../components/gis/GISMapCore';
 import { GISService } from '../components/gis/GISService';
+import DemandPrediction from '../components/gis/analytics/DemandPrediction';
+import ExpansionPlanner from '../components/gis/analytics/ExpansionPlanner';
+import AnalyticsHeatmap from '../components/gis/analytics/AnalyticsHeatmap';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 
@@ -17,6 +20,8 @@ export default function GISDashboard() {
   const [searchLng, setSearchLng] = useState('');
   const [serviceabilityResult, setServiceabilityResult] = useState(null);
   const [selectedAsset, setSelectedAsset] = useState(null);
+  const [demandZones, setDemandZones] = useState([]);
+  const [expansionPlan, setExpansionPlan] = useState(null);
 
   // Fetch GIS statistics
   const { data: assets = [] } = useQuery({
@@ -145,6 +150,14 @@ export default function GISDashboard() {
             <Map className="w-4 h-4 mr-2" />
             Map View
           </TabsTrigger>
+          <TabsTrigger value="analytics">
+            <BarChart3 className="w-4 h-4 mr-2" />
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="demand">
+            <Brain className="w-4 h-4 mr-2" />
+            AI Demand
+          </TabsTrigger>
           <TabsTrigger value="serviceability">
             <Search className="w-4 h-4 mr-2" />
             Serviceability
@@ -188,6 +201,22 @@ export default function GISDashboard() {
               </div>
             </Card>
           )}
+        </TabsContent>
+
+        <TabsContent value="analytics" className="mt-4">
+          <AnalyticsHeatmap center={[4.0511, 9.7679]} />
+        </TabsContent>
+
+        <TabsContent value="demand" className="mt-4">
+          <div className="grid lg:grid-cols-2 gap-4">
+            <DemandPrediction 
+              onPredictionComplete={(zones) => setDemandZones(zones)}
+            />
+            <ExpansionPlanner 
+              demandZones={demandZones}
+              onPlanGenerated={(plan) => setExpansionPlan(plan)}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="serviceability" className="mt-4 space-y-4">
