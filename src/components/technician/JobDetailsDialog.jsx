@@ -8,9 +8,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react';
 import PhotoUpload from './PhotoUpload';
 import SignatureCapture from './SignatureCapture';
+import AutomatedCommunications from './AutomatedCommunications';
 import StatusBadge from '../ui/StatusBadge';
 import { toast } from 'sonner';
 
@@ -75,6 +76,10 @@ export default function JobDetailsDialog({ job, open, onOpenChange, isOnline, on
             <TabsTrigger value="photos">Photos</TabsTrigger>
             <TabsTrigger value="signature">Signature</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
+            <TabsTrigger value="comms">
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Comms
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="details" className="space-y-4 mt-4">
@@ -168,6 +173,13 @@ export default function JobDetailsDialog({ job, open, onOpenChange, isOnline, on
                 />
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="comms" className="mt-4">
+            <AutomatedCommunications 
+              job={job}
+              technicianName="Field Technician"
+            />
           </TabsContent>
         </Tabs>
 
