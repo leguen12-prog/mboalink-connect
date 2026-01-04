@@ -1,35 +1,37 @@
-import Dashboard from './pages/Dashboard';
+import Alerts from './pages/Alerts';
+import Billing from './pages/Billing';
 import Customers from './pages/Customers';
+import Dashboard from './pages/Dashboard';
+import Inventory from './pages/Inventory';
+import NetworkMap from './pages/NetworkMap';
+import NetworkMonitoring from './pages/NetworkMonitoring';
 import OLTManagement from './pages/OLTManagement';
 import ONTManagement from './pages/ONTManagement';
-import Tickets from './pages/Tickets';
-import Billing from './pages/Billing';
-import WorkOrders from './pages/WorkOrders';
-import ServicePlans from './pages/ServicePlans';
-import Inventory from './pages/Inventory';
-import Alerts from './pages/Alerts';
-import Settings from './pages/Settings';
-import NetworkMonitoring from './pages/NetworkMonitoring';
-import NetworkMap from './pages/NetworkMap';
 import PredictiveMaintenance from './pages/PredictiveMaintenance';
+import ServicePlans from './pages/ServicePlans';
+import Settings from './pages/Settings';
+import Tickets from './pages/Tickets';
+import WorkOrders from './pages/WorkOrders';
+import TechnicianApp from './pages/TechnicianApp';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Dashboard": Dashboard,
+    "Alerts": Alerts,
+    "Billing": Billing,
     "Customers": Customers,
+    "Dashboard": Dashboard,
+    "Inventory": Inventory,
+    "NetworkMap": NetworkMap,
+    "NetworkMonitoring": NetworkMonitoring,
     "OLTManagement": OLTManagement,
     "ONTManagement": ONTManagement,
-    "Tickets": Tickets,
-    "Billing": Billing,
-    "WorkOrders": WorkOrders,
-    "ServicePlans": ServicePlans,
-    "Inventory": Inventory,
-    "Alerts": Alerts,
-    "Settings": Settings,
-    "NetworkMonitoring": NetworkMonitoring,
-    "NetworkMap": NetworkMap,
     "PredictiveMaintenance": PredictiveMaintenance,
+    "ServicePlans": ServicePlans,
+    "Settings": Settings,
+    "Tickets": Tickets,
+    "WorkOrders": WorkOrders,
+    "TechnicianApp": TechnicianApp,
 }
 
 export const pagesConfig = {
