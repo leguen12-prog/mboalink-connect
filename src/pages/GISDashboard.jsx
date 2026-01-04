@@ -18,6 +18,7 @@ import NetworkSimulator from '../components/gis/analytics/NetworkSimulator';
 import CAPEXScenarioModeler from '../components/gis/analytics/CAPEXScenarioModeler';
 import CapexOptimizer from '../components/gis/analytics/CapexOptimizer';
 import AssetManagement from '../components/gis/AssetManagement';
+import NetworkRolloutPlanner from '../components/gis/planning/NetworkRolloutPlanner';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 
@@ -172,6 +173,10 @@ export default function GISDashboard() {
             <Activity className="w-4 h-4 mr-2" />
             Simulation
           </TabsTrigger>
+          <TabsTrigger value="rollout">
+            <Navigation className="w-4 h-4 mr-2" />
+            Network Rollout
+          </TabsTrigger>
           <TabsTrigger value="assets">
             <Database className="w-4 h-4 mr-2" />
             Asset Management
@@ -309,6 +314,10 @@ export default function GISDashboard() {
               </div>
             )}
           </Card>
+        </TabsContent>
+
+        <TabsContent value="rollout" className="mt-4">
+          <NetworkRolloutPlanner />
         </TabsContent>
 
         <TabsContent value="assets" className="mt-4">
