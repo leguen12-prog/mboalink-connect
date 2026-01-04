@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Users, Router, Wifi, FileText, 
   CreditCard, Wrench, Package, Bell, AlertTriangle,
   Settings, LogOut, Menu, X, ChevronDown, Search,
-  Moon, Sun, User, HelpCircle
+  Moon, Sun, User, HelpCircle, Map
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,7 @@ const navItems = [
       { name: 'Monitoring', page: 'NetworkMonitoring' },
     ]
   },
+  { name: 'GIS Dashboard', icon: Map, page: 'GISDashboard' },
   { name: 'Service Plans', icon: Wifi, page: 'ServicePlans' },
   { name: 'Tickets', icon: FileText, page: 'Tickets' },
   { name: 'Billing', icon: CreditCard, page: 'Billing' },
