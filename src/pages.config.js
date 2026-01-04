@@ -2,6 +2,7 @@ import Alerts from './pages/Alerts';
 import Billing from './pages/Billing';
 import Customers from './pages/Customers';
 import Dashboard from './pages/Dashboard';
+import GISDashboard from './pages/GISDashboard';
 import Inventory from './pages/Inventory';
 import NetworkMap from './pages/NetworkMap';
 import NetworkMonitoring from './pages/NetworkMonitoring';
@@ -10,10 +11,9 @@ import ONTManagement from './pages/ONTManagement';
 import PredictiveMaintenance from './pages/PredictiveMaintenance';
 import ServicePlans from './pages/ServicePlans';
 import Settings from './pages/Settings';
+import TechnicianApp from './pages/TechnicianApp';
 import Tickets from './pages/Tickets';
 import WorkOrders from './pages/WorkOrders';
-import TechnicianApp from './pages/TechnicianApp';
-import GISDashboard from './pages/GISDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +22,7 @@ export const PAGES = {
     "Billing": Billing,
     "Customers": Customers,
     "Dashboard": Dashboard,
+    "GISDashboard": GISDashboard,
     "Inventory": Inventory,
     "NetworkMap": NetworkMap,
     "NetworkMonitoring": NetworkMonitoring,
@@ -30,10 +31,9 @@ export const PAGES = {
     "PredictiveMaintenance": PredictiveMaintenance,
     "ServicePlans": ServicePlans,
     "Settings": Settings,
+    "TechnicianApp": TechnicianApp,
     "Tickets": Tickets,
     "WorkOrders": WorkOrders,
-    "TechnicianApp": TechnicianApp,
-    "GISDashboard": GISDashboard,
 }
 
 export const pagesConfig = {
