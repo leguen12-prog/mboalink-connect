@@ -131,21 +131,23 @@ export default function EnhancedGISMap({
     
     if (layerType === 'polygon' || layerType === 'rectangle') {
       const coords = layer.getLatLngs()[0].map(latlng => [latlng.lng, latlng.lat]);
+      coords.push(coords[0]); // Close the polygon
       createGeofenceMutation.mutate({
-        name: `Geofence ${Date.now()}`,
+        name: `Zone ${new Date().toLocaleTimeString()}`,
         geometry: {
           type: 'Polygon',
           coordinates: [coords]
         },
         fence_type: 'custom',
         trigger_on: 'both',
-        is_active: true
+        is_active: true,
+        description: 'Custom drawn zone'
       });
     } else if (layerType === 'circle') {
       const center = layer.getLatLng();
       const radius = layer.getRadius();
       createGeofenceMutation.mutate({
-        name: `Circle Fence ${Date.now()}`,
+        name: `Circle ${new Date().toLocaleTimeString()}`,
         geometry: {
           type: 'Circle',
           coordinates: [center.lng, center.lat],
@@ -153,26 +155,11 @@ export default function EnhancedGISMap({
         },
         fence_type: 'custom',
         trigger_on: 'both',
-        is_active: true
+        is_active: true,
+        description: 'Circular monitoring zone'
       });
     } else if (layerType === 'polyline') {
-      const coords = layer.getLatLngs().map(latlng => [latlng.lng, latlng.lat]);
-      base44.entities.FibreRoute.create({
-        name: `Route ${Date.now()}`,
-        route_type: 'distribution',
-        geometry: {
-          type: 'LineString',
-          coordinates: coords
-        },
-        length_meters: layer.getLatLngs().reduce((total, coord, i, arr) => {
-          if (i === 0) return 0;
-          return total + arr[i-1].distanceTo(coord);
-        }, 0),
-        status: 'planned'
-      }).then(() => {
-        queryClient.invalidateQueries(['fibre-routes']);
-        toast.success('Route created');
-      });
+      toast.info('Route drawing captured. Please use Asset Management to create routes with proper endpoints.');
     }
   };
 
