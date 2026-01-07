@@ -180,12 +180,41 @@ export default function ServicePlans() {
       </div>
 
       <div className="mb-6">
-        <div className="flex items-end gap-1">
-          <span className="text-4xl font-bold text-white">
-            {(plan.price_monthly || 0).toLocaleString()}
-          </span>
-          <span className="text-slate-400 mb-1">XAF/mo</span>
-        </div>
+        {plan.category === 'payg' ? (
+          <div className="space-y-2">
+            {plan.price_daily && (
+              <div className="flex items-end gap-1">
+                <span className="text-3xl font-bold text-white">
+                  {plan.price_daily.toLocaleString()}
+                </span>
+                <span className="text-slate-400 mb-1">XAF/day</span>
+              </div>
+            )}
+            {plan.price_weekly && (
+              <div className="flex items-end gap-1">
+                <span className="text-3xl font-bold text-white">
+                  {plan.price_weekly.toLocaleString()}
+                </span>
+                <span className="text-slate-400 mb-1">XAF/week</span>
+              </div>
+            )}
+            {plan.price_monthly && (
+              <div className="flex items-end gap-1">
+                <span className="text-2xl font-semibold text-white">
+                  {plan.price_monthly.toLocaleString()}
+                </span>
+                <span className="text-slate-400 mb-1">XAF/mo</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-end gap-1">
+            <span className="text-4xl font-bold text-white">
+              {(plan.price_monthly || 0).toLocaleString()}
+            </span>
+            <span className="text-slate-400 mb-1">XAF/mo</span>
+          </div>
+        )}
         {plan.setup_fee > 0 && (
           <p className="text-sm text-slate-500 mt-1">
             + {plan.setup_fee?.toLocaleString()} XAF setup
@@ -405,15 +434,50 @@ export default function ServicePlans() {
                 className="bg-slate-800/50 border-slate-700 text-white"
               />
             </div>
-            <div className="space-y-2">
-              <Label className="text-slate-400">Monthly Price (XAF) *</Label>
-              <Input 
-                type="number"
-                value={formData.price_monthly}
-                onChange={(e) => setFormData({...formData, price_monthly: parseInt(e.target.value)})}
-                className="bg-slate-800/50 border-slate-700 text-white"
-              />
-            </div>
+            {formData.category === 'payg' ? (
+              <>
+                <div className="space-y-2">
+                  <Label className="text-slate-400">Daily Price (XAF)</Label>
+                  <Input 
+                    type="number"
+                    value={formData.price_daily || ''}
+                    onChange={(e) => setFormData({...formData, price_daily: e.target.value ? parseInt(e.target.value) : null})}
+                    className="bg-slate-800/50 border-slate-700 text-white"
+                    placeholder="e.g., 500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-slate-400">Weekly Price (XAF)</Label>
+                  <Input 
+                    type="number"
+                    value={formData.price_weekly || ''}
+                    onChange={(e) => setFormData({...formData, price_weekly: e.target.value ? parseInt(e.target.value) : null})}
+                    className="bg-slate-800/50 border-slate-700 text-white"
+                    placeholder="e.g., 3000"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-slate-400">Monthly Price (XAF)</Label>
+                  <Input 
+                    type="number"
+                    value={formData.price_monthly || ''}
+                    onChange={(e) => setFormData({...formData, price_monthly: e.target.value ? parseInt(e.target.value) : null})}
+                    className="bg-slate-800/50 border-slate-700 text-white"
+                    placeholder="e.g., 10000"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="space-y-2">
+                <Label className="text-slate-400">Monthly Price (XAF) *</Label>
+                <Input 
+                  type="number"
+                  value={formData.price_monthly}
+                  onChange={(e) => setFormData({...formData, price_monthly: parseInt(e.target.value)})}
+                  className="bg-slate-800/50 border-slate-700 text-white"
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label className="text-slate-400">Setup Fee (XAF)</Label>
               <Input 
