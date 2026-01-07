@@ -36,28 +36,59 @@
   }
 }
 
-/* Dropdown Menu Styles */
+/* Dropdown Menu Styles - Enhanced Contrast */
 [role="menu"],
-[role="menuitem"] {
-  color: rgb(226 232 240) !important;
-}
-
-[data-radix-collection-item] {
-  color: rgb(226 232 240) !important;
-}
-
-/* Ensure dropdown menu items have proper text color */
+[role="menuitem"],
+[data-radix-collection-item],
 .dropdown-menu-item,
-[cmdk-item],
+[cmdk-item] {
+  color: rgb(226 232 240) !important;
+}
+
+/* Dropdown buttons and triggers */
+button[role="combobox"],
+button[data-state],
+[data-radix-select-trigger],
+[class*="SelectTrigger"],
+[class*="DropdownMenuTrigger"] {
+  color: rgb(226 232 240) !important;
+}
+
+/* Dropdown content areas */
+[role="menu"],
+[data-radix-popper-content-wrapper],
+[class*="DropdownMenuContent"],
+[class*="SelectContent"],
+[class*="PopoverContent"] {
+  color: rgb(226 232 240) !important;
+}
+
+/* Menu items */
 button[role="menuitem"],
 a[role="menuitem"],
-div[role="menuitem"] {
+div[role="menuitem"],
+[role="option"],
+[data-radix-select-item] {
   color: rgb(226 232 240) !important;
 }
 
 /* Hover states */
 button[role="menuitem"]:hover,
 a[role="menuitem"]:hover,
-div[role="menuitem"]:hover {
+div[role="menuitem"]:hover,
+[role="option"]:hover,
+[data-radix-select-item]:hover {
   color: rgb(255 255 255) !important;
+}
+
+/* Select component text */
+[class*="Select"] span,
+[class*="Dropdown"] span,
+button[role="combobox"] span {
+  color: rgb(226 232 240) !important;
+}
+
+/* Ensure placeholder text is visible */
+[data-placeholder] {
+  color: rgb(148 163 184) !important;
 }
