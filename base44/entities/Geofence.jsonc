@@ -1,0 +1,95 @@
+{
+  "name": "Geofence",
+  "type": "object",
+  "properties": {
+    "fence_id": {
+      "type": "string",
+      "description": "Unique geofence identifier"
+    },
+    "name": {
+      "type": "string"
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Polygon",
+            "Circle"
+          ]
+        },
+        "coordinates": {
+          "type": "array"
+        },
+        "radius": {
+          "type": "number",
+          "description": "For circle type, radius in meters"
+        }
+      }
+    },
+    "fence_type": {
+      "type": "string",
+      "enum": [
+        "restricted_zone",
+        "service_area",
+        "maintenance_zone",
+        "custom"
+      ],
+      "default": "custom"
+    },
+    "trigger_on": {
+      "type": "string",
+      "enum": [
+        "enter",
+        "exit",
+        "both"
+      ],
+      "default": "both"
+    },
+    "monitored_asset_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Asset types to monitor (e.g., ['olt', 'ont'])"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "alert",
+              "notification",
+              "work_order",
+              "log"
+            ]
+          },
+          "params": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "alert_recipients": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "geometry"
+  ]
+}

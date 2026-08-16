@@ -1,0 +1,147 @@
+{
+  "name": "ONT",
+  "type": "object",
+  "properties": {
+    "ont_id": {
+      "type": "string",
+      "description": "Unique ONT identifier"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "mac_address": {
+      "type": "string"
+    },
+    "vendor": {
+      "type": "string",
+      "enum": [
+        "VSOL",
+        "C-Data",
+        "Huawei",
+        "ZTE",
+        "Nokia",
+        "TP-Link",
+        "Other"
+      ]
+    },
+    "model": {
+      "type": "string"
+    },
+    "olt_id": {
+      "type": "string"
+    },
+    "pon_port": {
+      "type": "number"
+    },
+    "ont_index": {
+      "type": "number"
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "offline",
+        "los",
+        "dying_gasp",
+        "unprovisioned",
+        "inventory"
+      ],
+      "default": "inventory"
+    },
+    "rx_power_dbm": {
+      "type": "number"
+    },
+    "tx_power_dbm": {
+      "type": "number"
+    },
+    "signal_quality": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "poor",
+        "critical"
+      ]
+    },
+    "firmware_version": {
+      "type": "string"
+    },
+    "vlan_id": {
+      "type": "number"
+    },
+    "service_profile": {
+      "type": "string"
+    },
+    "speed_profile": {
+      "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "pppoe_username": {
+      "type": "string"
+    },
+    "installation_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uptime_hours": {
+      "type": "number"
+    },
+    "has_battery_backup": {
+      "type": "boolean",
+      "default": false
+    },
+    "battery_status": {
+      "type": "string",
+      "enum": [
+        "charging",
+        "discharging",
+        "full",
+        "low",
+        "critical",
+        "not_installed"
+      ]
+    },
+    "battery_percent": {
+      "type": "number"
+    },
+    "wifi_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "wifi_ssid": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "gps_lat": {
+          "type": "number"
+        },
+        "gps_lng": {
+          "type": "number"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "serial_number",
+    "vendor",
+    "model"
+  ]
+}

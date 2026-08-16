@@ -1,0 +1,111 @@
+{
+  "name": "OLT",
+  "type": "object",
+  "properties": {
+    "olt_id": {
+      "type": "string",
+      "description": "Unique OLT identifier"
+    },
+    "name": {
+      "type": "string"
+    },
+    "vendor": {
+      "type": "string",
+      "enum": [
+        "VSOL",
+        "C-Data",
+        "Huawei",
+        "ZTE",
+        "Nokia",
+        "Fiberhome",
+        "Other"
+      ]
+    },
+    "model": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "site_name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "gps_lat": {
+          "type": "number"
+        },
+        "gps_lng": {
+          "type": "number"
+        }
+      }
+    },
+    "total_pon_ports": {
+      "type": "number"
+    },
+    "active_pon_ports": {
+      "type": "number"
+    },
+    "total_ont_capacity": {
+      "type": "number"
+    },
+    "active_onts": {
+      "type": "number"
+    },
+    "uplink_ports": {
+      "type": "number"
+    },
+    "firmware_version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "offline",
+        "degraded",
+        "maintenance"
+      ],
+      "default": "online"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uptime_hours": {
+      "type": "number"
+    },
+    "cpu_usage_percent": {
+      "type": "number"
+    },
+    "memory_usage_percent": {
+      "type": "number"
+    },
+    "temperature_celsius": {
+      "type": "number"
+    },
+    "installation_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "olt_id",
+    "name",
+    "vendor",
+    "ip_address"
+  ]
+}

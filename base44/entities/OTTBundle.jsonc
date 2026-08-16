@@ -1,0 +1,59 @@
+{
+  "name": "OTTBundle",
+  "type": "object",
+  "properties": {
+    "bundle_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string",
+      "enum": [
+        "netflix",
+        "disney_plus",
+        "amazon_prime",
+        "canal_plus",
+        "showmax",
+        "dstv",
+        "custom"
+      ]
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "standard",
+        "premium"
+      ]
+    },
+    "price_monthly": {
+      "type": "number"
+    },
+    "retail_price": {
+      "type": "number"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "icon_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "provider",
+    "price_monthly"
+  ]
+}

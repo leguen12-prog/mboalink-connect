@@ -1,0 +1,184 @@
+{
+  "name": "GISAsset",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "description": "Unique asset identifier"
+    },
+    "layer_id": {
+      "type": "string",
+      "description": "Reference to GISLayer"
+    },
+    "asset_type": {
+      "type": "string",
+      "enum": [
+        "olt",
+        "ont",
+        "pole",
+        "manhole",
+        "chamber",
+        "duct",
+        "cabinet",
+        "splitter",
+        "fibre_route",
+        "premises",
+        "base_station",
+        "antenna"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Point",
+            "LineString",
+            "Polygon"
+          ]
+        },
+        "coordinates": {
+          "type": "array"
+        }
+      }
+    },
+    "properties": {
+      "type": "object",
+      "description": "Asset-specific attributes"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "active",
+        "inactive",
+        "maintenance",
+        "faulty",
+        "decommissioned"
+      ],
+      "default": "active"
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": [
+        "procurement",
+        "installation",
+        "operational",
+        "maintenance",
+        "decommissioning",
+        "decommissioned"
+      ],
+      "default": "procurement"
+    },
+    "connected_assets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs of connected assets for topology"
+    },
+    "capacity": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "used": {
+          "type": "number"
+        },
+        "available": {
+          "type": "number"
+        }
+      }
+    },
+    "procurement_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "procurement_cost": {
+      "type": "number"
+    },
+    "installation_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "installation_cost": {
+      "type": "number"
+    },
+    "warranty_expiry": {
+      "type": "string",
+      "format": "date"
+    },
+    "expected_lifespan_years": {
+      "type": "number"
+    },
+    "decommission_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "total_maintenance_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "last_maintenance_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_scheduled_maintenance": {
+      "type": "string",
+      "format": "date"
+    },
+    "maintenance_interval_days": {
+      "type": "number",
+      "default": 180
+    },
+    "health_score": {
+      "type": "number",
+      "description": "Asset health 0-100"
+    },
+    "criticality": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    },
+    "vendor": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "version": {
+      "type": "number",
+      "default": 1
+    },
+    "inventory_ref": {
+      "type": "string",
+      "description": "Link to inventory item"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "asset_type",
+    "geometry"
+  ]
+}

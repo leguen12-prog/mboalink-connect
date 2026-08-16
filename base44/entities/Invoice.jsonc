@@ -1,0 +1,111 @@
+{
+  "name": "Invoice",
+  "type": "object",
+  "properties": {
+    "invoice_number": {
+      "type": "string"
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "invoice_type": {
+      "type": "string",
+      "enum": [
+        "subscription",
+        "payg",
+        "one_time",
+        "credit_note",
+        "setup_fee"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending",
+        "paid",
+        "partial",
+        "overdue",
+        "cancelled",
+        "refunded"
+      ],
+      "default": "pending"
+    },
+    "billing_period_start": {
+      "type": "string",
+      "format": "date"
+    },
+    "billing_period_end": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "tax_rate": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "tax_amount": {
+      "type": "number"
+    },
+    "discount_amount": {
+      "type": "number"
+    },
+    "total_amount": {
+      "type": "number"
+    },
+    "amount_paid": {
+      "type": "number",
+      "default": 0
+    },
+    "currency": {
+      "type": "string",
+      "default": "XAF"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "mtn_momo",
+        "orange_money",
+        "card",
+        "bank_transfer",
+        "cash"
+      ]
+    },
+    "payment_reference": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "customer_id",
+    "invoice_type",
+    "total_amount"
+  ]
+}

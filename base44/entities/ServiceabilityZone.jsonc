@@ -1,0 +1,87 @@
+{
+  "name": "ServiceabilityZone",
+  "type": "object",
+  "properties": {
+    "zone_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Polygon"
+          ]
+        },
+        "coordinates": {
+          "type": "array"
+        }
+      }
+    },
+    "serviceability_status": {
+      "type": "string",
+      "enum": [
+        "fully_serviceable",
+        "limited_capacity",
+        "planned",
+        "not_serviceable"
+      ]
+    },
+    "technology": {
+      "type": "string",
+      "enum": [
+        "ftth",
+        "fttb",
+        "fttc",
+        "wireless",
+        "hybrid"
+      ]
+    },
+    "max_speed_mbps": {
+      "type": "number"
+    },
+    "serving_olt_id": {
+      "type": "string"
+    },
+    "premises_count": {
+      "type": "number"
+    },
+    "active_customers": {
+      "type": "number"
+    },
+    "capacity_remaining": {
+      "type": "number"
+    },
+    "avg_distance_to_olt": {
+      "type": "number",
+      "description": "Average distance in meters"
+    },
+    "expansion_priority": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "demand_score": {
+      "type": "number",
+      "description": "AI-calculated demand 0-100"
+    },
+    "rollout_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "name",
+    "geometry",
+    "serviceability_status",
+    "technology"
+  ]
+}

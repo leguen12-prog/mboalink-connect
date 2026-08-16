@@ -1,0 +1,97 @@
+{
+  "name": "InventoryItem",
+  "type": "object",
+  "properties": {
+    "item_id": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "ont",
+        "olt",
+        "router",
+        "ups",
+        "cable",
+        "splitter",
+        "connector",
+        "sfp",
+        "patch_panel",
+        "enclosure",
+        "tool",
+        "other"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "vendor": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_stock",
+        "deployed",
+        "reserved",
+        "defective",
+        "in_transit",
+        "retired"
+      ],
+      "default": "in_stock"
+    },
+    "warehouse_location": {
+      "type": "string"
+    },
+    "bin_location": {
+      "type": "string"
+    },
+    "quantity_in_stock": {
+      "type": "number",
+      "default": 0
+    },
+    "minimum_stock_level": {
+      "type": "number"
+    },
+    "unit_cost": {
+      "type": "number"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "warranty_expiry": {
+      "type": "string",
+      "format": "date"
+    },
+    "assigned_to_customer": {
+      "type": "string"
+    },
+    "assigned_to_technician": {
+      "type": "string"
+    },
+    "last_audit_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "qr_code": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "category",
+    "name"
+  ]
+}

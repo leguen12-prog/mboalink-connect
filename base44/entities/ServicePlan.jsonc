@@ -1,0 +1,89 @@
+{
+  "name": "ServicePlan",
+  "type": "object",
+  "properties": {
+    "plan_code": {
+      "type": "string",
+      "description": "Unique plan identifier"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "residential",
+        "business",
+        "enterprise",
+        "payg"
+      ]
+    },
+    "download_speed_mbps": {
+      "type": "number"
+    },
+    "upload_speed_mbps": {
+      "type": "number"
+    },
+    "data_cap_gb": {
+      "type": "number",
+      "description": "null for unlimited"
+    },
+    "price_monthly": {
+      "type": "number"
+    },
+    "price_daily": {
+      "type": "number",
+      "description": "For PAYG plans"
+    },
+    "price_weekly": {
+      "type": "number",
+      "description": "For PAYG plans"
+    },
+    "setup_fee": {
+      "type": "number"
+    },
+    "vlan_id": {
+      "type": "number"
+    },
+    "priority_class": {
+      "type": "string",
+      "enum": [
+        "best_effort",
+        "priority",
+        "premium"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ott_bundles_included": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "static_ip_available": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "display_order": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "plan_code",
+    "name",
+    "download_speed_mbps",
+    "price_monthly"
+  ]
+}

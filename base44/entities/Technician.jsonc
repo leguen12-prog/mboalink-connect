@@ -1,0 +1,97 @@
+{
+  "name": "Technician",
+  "type": "object",
+  "properties": {
+    "technician_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "employee_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "on_job",
+        "on_break",
+        "off_duty"
+      ],
+      "default": "available"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "installation",
+          "splicing",
+          "troubleshooting",
+          "olt_config",
+          "enterprise",
+          "wifi"
+        ]
+      }
+    },
+    "certification_level": {
+      "type": "string",
+      "enum": [
+        "junior",
+        "senior",
+        "lead",
+        "specialist"
+      ]
+    },
+    "assigned_zone": {
+      "type": "string"
+    },
+    "current_location": {
+      "type": "object",
+      "properties": {
+        "lat": {
+          "type": "number"
+        },
+        "lng": {
+          "type": "number"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
+    "vehicle_id": {
+      "type": "string"
+    },
+    "jobs_completed_today": {
+      "type": "number",
+      "default": 0
+    },
+    "jobs_completed_month": {
+      "type": "number",
+      "default": 0
+    },
+    "average_rating": {
+      "type": "number"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "phone"
+  ]
+}

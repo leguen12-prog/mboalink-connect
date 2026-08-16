@@ -1,0 +1,63 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "payment_id": {
+      "type": "string"
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "invoice_id": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "XAF"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "mtn_momo",
+        "orange_money",
+        "card",
+        "bank_transfer",
+        "cash"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed",
+        "refunded"
+      ],
+      "default": "pending"
+    },
+    "transaction_reference": {
+      "type": "string"
+    },
+    "gateway_response": {
+      "type": "string"
+    },
+    "payer_phone": {
+      "type": "string"
+    },
+    "processed_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "customer_id",
+    "amount",
+    "payment_method"
+  ]
+}

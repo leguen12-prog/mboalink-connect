@@ -1,0 +1,114 @@
+{
+  "name": "PredictiveMaintenance",
+  "type": "object",
+  "properties": {
+    "prediction_id": {
+      "type": "string"
+    },
+    "device_type": {
+      "type": "string",
+      "enum": [
+        "olt",
+        "ont"
+      ]
+    },
+    "device_id": {
+      "type": "string"
+    },
+    "prediction_type": {
+      "type": "string",
+      "enum": [
+        "hardware_failure",
+        "signal_degradation",
+        "overheating",
+        "performance_degradation",
+        "power_supply_failure"
+      ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ],
+      "default": "medium"
+    },
+    "confidence_score": {
+      "type": "number",
+      "description": "AI confidence level 0-100"
+    },
+    "predicted_failure_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "days_until_failure": {
+      "type": "number"
+    },
+    "analysis_summary": {
+      "type": "string",
+      "description": "AI-generated summary of the prediction"
+    },
+    "contributing_factors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of metrics contributing to the prediction"
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "acknowledged",
+        "resolved",
+        "false_positive"
+      ],
+      "default": "active"
+    },
+    "acknowledged_by": {
+      "type": "string"
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "related_alert_id": {
+      "type": "string"
+    },
+    "related_work_order_id": {
+      "type": "string"
+    },
+    "auto_work_order_created": {
+      "type": "boolean",
+      "default": false
+    },
+    "affected_customers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "historical_data_analyzed": {
+      "type": "number",
+      "description": "Number of data points analyzed"
+    },
+    "model_version": {
+      "type": "string",
+      "default": "v1.0"
+    }
+  },
+  "required": [
+    "device_type",
+    "device_id",
+    "prediction_type",
+    "risk_level"
+  ]
+}

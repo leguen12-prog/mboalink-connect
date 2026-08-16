@@ -1,0 +1,82 @@
+{
+  "name": "GISLayer",
+  "type": "object",
+  "properties": {
+    "layer_id": {
+      "type": "string",
+      "description": "Unique layer identifier"
+    },
+    "name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "base_map",
+        "infrastructure",
+        "customer",
+        "operational",
+        "engineering"
+      ]
+    },
+    "layer_type": {
+      "type": "string",
+      "enum": [
+        "point",
+        "line",
+        "polygon",
+        "raster"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "is_visible": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_editable": {
+      "type": "boolean",
+      "default": false
+    },
+    "z_index": {
+      "type": "number",
+      "description": "Layer order for display"
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "opacity": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "icon": {
+          "type": "string"
+        }
+      }
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "layer_type"
+  ]
+}

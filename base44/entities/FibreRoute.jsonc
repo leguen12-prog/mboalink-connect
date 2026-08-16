@@ -1,0 +1,116 @@
+{
+  "name": "FibreRoute",
+  "type": "object",
+  "properties": {
+    "route_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "route_type": {
+      "type": "string",
+      "enum": [
+        "feeder",
+        "distribution",
+        "drop"
+      ],
+      "description": "Network hierarchy level"
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "LineString"
+          ]
+        },
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "from_asset_id": {
+      "type": "string"
+    },
+    "to_asset_id": {
+      "type": "string"
+    },
+    "length_meters": {
+      "type": "number"
+    },
+    "fibre_count": {
+      "type": "number"
+    },
+    "fibre_type": {
+      "type": "string",
+      "enum": [
+        "single_mode",
+        "multi_mode"
+      ]
+    },
+    "duct_type": {
+      "type": "string",
+      "enum": [
+        "underground",
+        "aerial",
+        "buried"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "in_construction",
+        "active",
+        "faulty"
+      ],
+      "default": "planned"
+    },
+    "capacity_utilization": {
+      "type": "number",
+      "description": "Percentage 0-100"
+    },
+    "intermediate_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "distance_from_start": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "bom": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "route_type",
+    "geometry",
+    "from_asset_id",
+    "to_asset_id"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "PerformanceMetric",
+  "type": "object",
+  "properties": {
+    "device_type": {
+      "type": "string",
+      "enum": [
+        "olt",
+        "ont"
+      ],
+      "description": "Type of device"
+    },
+    "device_id": {
+      "type": "string",
+      "description": "Reference to OLT or ONT ID"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cpu_usage": {
+      "type": "number"
+    },
+    "memory_usage": {
+      "type": "number"
+    },
+    "temperature": {
+      "type": "number"
+    },
+    "rx_power": {
+      "type": "number",
+      "description": "For ONTs - receive power in dBm"
+    },
+    "tx_power": {
+      "type": "number",
+      "description": "For ONTs - transmit power in dBm"
+    },
+    "error_count": {
+      "type": "number",
+      "default": 0
+    },
+    "packet_loss_percent": {
+      "type": "number"
+    },
+    "uptime_hours": {
+      "type": "number"
+    },
+    "bandwidth_utilization": {
+      "type": "number",
+      "description": "Percentage of bandwidth being used"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "online",
+        "offline",
+        "degraded",
+        "los"
+      ]
+    }
+  },
+  "required": [
+    "device_type",
+    "device_id",
+    "timestamp"
+  ]
+}

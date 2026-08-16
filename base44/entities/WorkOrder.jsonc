@@ -1,0 +1,142 @@
+{
+  "name": "WorkOrder",
+  "type": "object",
+  "properties": {
+    "work_order_id": {
+      "type": "string"
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "ticket_id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "installation",
+        "repair",
+        "upgrade",
+        "relocation",
+        "disconnect",
+        "maintenance",
+        "survey"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "urgent",
+        "high",
+        "normal",
+        "low"
+      ],
+      "default": "normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "assigned",
+        "in_transit",
+        "in_progress",
+        "on_hold",
+        "completed",
+        "cancelled",
+        "failed"
+      ],
+      "default": "scheduled"
+    },
+    "assigned_technician": {
+      "type": "string"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "scheduled_time_slot": {
+      "type": "string",
+      "enum": [
+        "morning",
+        "afternoon",
+        "evening"
+      ]
+    },
+    "estimated_duration_minutes": {
+      "type": "number"
+    },
+    "actual_start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actual_end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "gps_lat": {
+          "type": "number"
+        },
+        "gps_lng": {
+          "type": "number"
+        }
+      }
+    },
+    "equipment_needed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "equipment_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item_id": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "ont_serial_installed": {
+      "type": "string"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customer_signature": {
+      "type": "string"
+    },
+    "technician_notes": {
+      "type": "string"
+    },
+    "completion_notes": {
+      "type": "string"
+    },
+    "customer_rating": {
+      "type": "number"
+    },
+    "customer_feedback": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "customer_id",
+    "type"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "name": "AssetMaintenanceHistory",
+  "type": "object",
+  "properties": {
+    "maintenance_id": {
+      "type": "string",
+      "description": "Unique maintenance record identifier"
+    },
+    "asset_id": {
+      "type": "string",
+      "description": "Reference to GISAsset"
+    },
+    "maintenance_type": {
+      "type": "string",
+      "enum": [
+        "preventive",
+        "corrective",
+        "predictive",
+        "emergency",
+        "inspection"
+      ],
+      "description": "Type of maintenance performed"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "in_progress",
+        "completed",
+        "cancelled",
+        "overdue"
+      ],
+      "default": "scheduled"
+    },
+    "technician_assigned": {
+      "type": "string"
+    },
+    "work_order_id": {
+      "type": "string"
+    },
+    "prediction_id": {
+      "type": "string",
+      "description": "Link to predictive maintenance prediction if triggered by AI"
+    },
+    "description": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "string",
+      "description": "What was found during maintenance"
+    },
+    "actions_taken": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parts_replaced": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "part_name": {
+            "type": "string"
+          },
+          "part_number": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "cost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "labor_hours": {
+      "type": "number"
+    },
+    "labor_cost": {
+      "type": "number"
+    },
+    "total_cost": {
+      "type": "number"
+    },
+    "downtime_minutes": {
+      "type": "number"
+    },
+    "before_condition": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "poor",
+        "critical"
+      ]
+    },
+    "after_condition": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "poor",
+        "critical"
+      ]
+    },
+    "next_maintenance_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "asset_id",
+    "maintenance_type"
+  ]
+}

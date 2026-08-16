@@ -1,0 +1,90 @@
+{
+  "name": "GISEvent",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "outage",
+        "planned_work",
+        "field_task",
+        "fault",
+        "installation",
+        "inspection"
+      ]
+    },
+    "geometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": "array"
+        }
+      }
+    },
+    "affected_area_polygon": {
+      "type": "object",
+      "description": "Geometry of affected zone"
+    },
+    "related_assets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_customers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "resolved",
+        "scheduled"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "major",
+        "minor"
+      ]
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string"
+    },
+    "assigned_team": {
+      "type": "string"
+    },
+    "work_order_id": {
+      "type": "string"
+    },
+    "ticket_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "event_type",
+    "geometry"
+  ]
+}

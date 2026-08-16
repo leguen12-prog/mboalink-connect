@@ -1,0 +1,149 @@
+{
+  "name": "Ticket",
+  "type": "object",
+  "properties": {
+    "ticket_id": {
+      "type": "string",
+      "description": "Unique ticket number"
+    },
+    "customer_id": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "technical",
+        "billing",
+        "installation",
+        "service_change",
+        "complaint",
+        "inquiry",
+        "outage"
+      ]
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_progress",
+        "pending_customer",
+        "pending_vendor",
+        "escalated",
+        "resolved",
+        "closed"
+      ],
+      "default": "open"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "phone",
+        "email",
+        "app",
+        "web",
+        "chat",
+        "auto_detected"
+      ]
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "User ID of assigned staff"
+    },
+    "assigned_team": {
+      "type": "string",
+      "enum": [
+        "noc",
+        "field_ops",
+        "customer_support",
+        "billing",
+        "tier2"
+      ]
+    },
+    "sla_due_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sla_status": {
+      "type": "string",
+      "enum": [
+        "on_track",
+        "at_risk",
+        "breached"
+      ]
+    },
+    "resolution_notes": {
+      "type": "string"
+    },
+    "resolved_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ai_suggested_resolution": {
+      "type": "string"
+    },
+    "ai_category_confidence": {
+      "type": "number"
+    },
+    "sentiment_score": {
+      "type": "number",
+      "description": "AI sentiment -1 to 1"
+    },
+    "related_ont_id": {
+      "type": "string"
+    },
+    "related_work_order_id": {
+      "type": "string"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "is_internal": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "customer_id",
+    "category",
+    "subject",
+    "description"
+  ]
+}
