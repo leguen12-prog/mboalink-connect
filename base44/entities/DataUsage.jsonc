@@ -1,0 +1,61 @@
+{
+  "name": "DataUsage",
+  "type": "object",
+  "properties": {
+    "customer_id": {
+      "type": "string",
+      "description": "Reference to Customer entity (internal id)"
+    },
+    "customer_id_ref": {
+      "type": "string",
+      "description": "Customer's external ID (MBL-XXXXX)"
+    },
+    "billing_period": {
+      "type": "string",
+      "description": "Billing month in YYYY-MM format"
+    },
+    "data_used_gb": {
+      "type": "number",
+      "description": "Cumulative data consumed this period in GB",
+      "default": 0
+    },
+    "data_cap_gb": {
+      "type": "number",
+      "description": "Plan data cap snapshot (null = unlimited)"
+    },
+    "plan_code": {
+      "type": "string",
+      "description": "Service plan code at time of record"
+    },
+    "percentage_used": {
+      "type": "number",
+      "description": "Used / cap * 100 (null if unlimited)"
+    },
+    "notification_80_sent": {
+      "type": "boolean",
+      "default": false
+    },
+    "notification_95_sent": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "radius",
+        "ont_poll",
+        "manual",
+        "estimated"
+      ],
+      "default": "estimated"
+    }
+  },
+  "required": [
+    "customer_id",
+    "billing_period"
+  ]
+}

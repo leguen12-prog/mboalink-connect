@@ -4,6 +4,7 @@ import { MapPin, Navigation, Clock, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 const statusColors = {
   scheduled: '#3b82f6',

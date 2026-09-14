@@ -363,6 +363,134 @@ Facturation MBOALINK`
     }
   },
 
+  // Data cap 80% warning
+  data_cap_80: {
+    en: {
+      email: {
+        subject: "Data Usage Alert - 80% of Your Monthly Cap Reached",
+        body: `Dear {{firstName}},
+
+You have now used 80% of your monthly data allowance.
+
+Usage Summary:
+- Data Used: {{dataUsed}} GB
+- Monthly Cap: {{dataCap}} GB
+- Remaining: {{dataRemaining}} GB
+- Billing Period: {{billingPeriod}}
+
+To avoid exceeding your cap and experiencing reduced speeds, you can:
+- Upgrade to a higher data plan
+- Purchase a data top-up package
+- Monitor your usage more closely
+
+Visit the MBOALINK app or portal to manage your plan.
+
+Best regards,
+MBOALINK Team`
+      },
+      sms: "MBOALINK: You've used 80% of your monthly data ({{dataUsed}}/{{dataCap}} GB). Upgrade or top-up in the app to avoid speed reduction.",
+      push: {
+        title: "Data Alert: 80% Used",
+        body: "You've used 80% of your monthly data ({{dataUsed}}/{{dataCap}} GB). Tap to manage your plan."
+      }
+    },
+    fr: {
+      email: {
+        subject: "Alerte d'utilisation - 80% de votre forfait mensuel atteint",
+        body: `Cher(e) {{firstName}},
+
+Vous avez maintenant utilisé 80% de votre quota de données mensuel.
+
+Résumé d'utilisation:
+- Données utilisées: {{dataUsed}} Go
+- Forfait mensuel: {{dataCap}} Go
+- Restant: {{dataRemaining}} Go
+- Période de facturation: {{billingPeriod}}
+
+Pour éviter de dépasser votre quota et subir une réduction de vitesse, vous pouvez:
+- Passer à un forfait supérieur
+- Acheter un package de recharge de données
+- Surveiller votre utilisation de plus près
+
+Visitez l'application ou le portail MBOALINK pour gérer votre forfait.
+
+Cordialement,
+Équipe MBOALINK`
+      },
+      sms: "MBOALINK: Vous avez utilisé 80% de vos données mensuelles ({{dataUsed}}/{{dataCap}} Go). Passez à un forfait supérieur ou rechargez dans l'application.",
+      push: {
+        title: "Alerte données: 80% utilisés",
+        body: "Vous avez utilisé 80% de vos données mensuelles ({{dataUsed}}/{{dataCap}} Go). Touchez pour gérer votre forfait."
+      }
+    }
+  },
+
+  // Data cap 95% critical warning
+  data_cap_95: {
+    en: {
+      email: {
+        subject: "URGENT: 95% of Your Monthly Data Cap Reached",
+        body: `Dear {{firstName}},
+
+You have now used 95% of your monthly data allowance.
+
+Usage Summary:
+- Data Used: {{dataUsed}} GB
+- Monthly Cap: {{dataCap}} GB
+- Remaining: {{dataRemaining}} GB
+- Billing Period: {{billingPeriod}}
+
+You are about to reach your monthly data limit. Once exceeded, your internet speed may be reduced or service may be interrupted depending on your plan.
+
+Take Action Now:
+- Upgrade to an unlimited or higher-cap plan
+- Purchase a data top-up
+- Your billing cycle resets on {{resetDate}}
+
+Manage your account in the MBOALINK app or portal.
+
+Best regards,
+MBOALINK Team`
+      },
+      sms: "MBOALINK URGENT: You've used 95% of your monthly data ({{dataUsed}}/{{dataCap}} GB). Only {{dataRemaining}} GB left. Upgrade now to avoid speed reduction.",
+      push: {
+        title: "Urgent: 95% Data Used",
+        body: "Only {{dataRemaining}} GB left this month ({{dataUsed}}/{{dataCap}} GB). Tap to upgrade now."
+      }
+    },
+    fr: {
+      email: {
+        subject: "URGENT: 95% de votre forfait mensuel atteint",
+        body: `Cher(e) {{firstName}},
+
+Vous avez maintenant utilisé 95% de votre quota de données mensuel.
+
+Résumé d'utilisation:
+- Données utilisées: {{dataUsed}} Go
+- Forfait mensuel: {{dataCap}} Go
+- Restant: {{dataRemaining}} Go
+- Période de facturation: {{billingPeriod}}
+
+Vous êtes sur le point d'atteindre votre limite mensuelle. Une fois dépassée, votre vitesse internet peut être réduite ou le service interrompu selon votre forfait.
+
+Agissez maintenant:
+- Passez à un forfait illimité ou supérieur
+- Achetez une recharge de données
+- Votre cycle de facturation se réinitialise le {{resetDate}}
+
+Gérez votre compte dans l'application ou le portail MBOALINK.
+
+Cordialement,
+Équipe MBOALINK`
+      },
+      sms: "MBOALINK URGENT: Vous avez utilisé 95% de vos données ({{dataUsed}}/{{dataCap}} Go). Plus que {{dataRemaining}} Go. Passez à un forfait supérieur maintenant.",
+      push: {
+        title: "Urgent: 95% données utilisées",
+        body: "Plus que {{dataRemaining}} Go ce mois ({{dataUsed}}/{{dataCap}} Go). Touchez pour passer à un forfait supérieur."
+      }
+    }
+  },
+
   // Service restored
   service_restored: {
     en: {

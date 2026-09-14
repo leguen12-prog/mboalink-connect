@@ -3,8 +3,9 @@ import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { 
   User, Building, Bell, Shield, Palette, 
-  Globe, Save, Mail, Phone, MapPin
+  Globe, Save, Mail, Phone, MapPin, TrendingUp
 } from 'lucide-react';
+import DataCapNotificationsPanel from '@/components/settings/DataCapNotificationsPanel';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,6 +94,9 @@ export default function Settings() {
           </TabsTrigger>
           <TabsTrigger value="notifications" className="data-[state=active]:bg-slate-700">
             <Bell className="w-4 h-4 mr-2" /> Notifications
+          </TabsTrigger>
+          <TabsTrigger value="data-caps" className="data-[state=active]:bg-slate-700">
+            <TrendingUp className="w-4 h-4 mr-2" /> Data Caps
           </TabsTrigger>
           <TabsTrigger value="security" className="data-[state=active]:bg-slate-700">
             <Shield className="w-4 h-4 mr-2" /> Security
@@ -324,6 +328,11 @@ export default function Settings() {
               </Button>
             </div>
           </motion.div>
+        </TabsContent>
+
+        {/* Data Cap Notifications */}
+        <TabsContent value="data-caps">
+          <DataCapNotificationsPanel />
         </TabsContent>
 
         {/* Security Settings */}
