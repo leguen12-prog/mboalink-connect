@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Polygon, LayersControl, FeatureGroup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Polygon, FeatureGroup, useMap } from 'react-leaflet';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import LayerControlPanel from './LayerControlPanel';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import L from 'leaflet';
@@ -86,12 +87,34 @@ export default function EnhancedGISMap({
   height = '600px'
 }) {
   const [drawingMode, setDrawingMode] = useState(false);
-  const [overlayLayers, setOverlayLayers] = useState({
+  const [layers, setLayers] = useState({
+    // Population density
     population: false,
     terrain: false,
-    satellite: false
+    satellite: false,
+    // Network infrastructure
+    olts: true,
+    onts: true,
+    poles: false,
+    splitters: false,
+    routes: true,
+    geofences: true,
+    // Usage heatmaps
+    zones: false,
+    events: false,
   });
   const queryClient = useQueryClient();
+
+  const handleToggleLayer = (layerId) => {
+    setLayers(prev => ({ ...prev, [layerId]: !prev[layerId] }));
+  };
+
+  const handleToggleAll = () => {
+    const anyActive = Object.values(layers).some(Boolean);
+    const newState = {};
+    Object.keys(layers).forEach(k => { newState[k] = !anyActive; });
+    setLayers(newState);
+  };
 
   const { data: assets = [] } = useQuery({
     queryKey: ['gis-assets'],
@@ -173,46 +196,20 @@ export default function EnhancedGISMap({
     <div className="relative">
       <div className="absolute top-4 left-4 z-[1000] space-y-2">
         <Card className="bg-slate-900/90 border-slate-800 p-2">
-          <div className="space-y-2">
-            <Button
-              size="sm"
-              variant={drawingMode ? "default" : "outline"}
-              onClick={() => setDrawingMode(!drawingMode)}
-              className="w-full"
-            >
-              {drawingMode ? 'Drawing Active' : 'Enable Drawing'}
-            </Button>
-            <div className="space-y-1">
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={overlayLayers.population}
-                  onChange={(e) => setOverlayLayers({...overlayLayers, population: e.target.checked})}
-                  className="w-3 h-3"
-                />
-                Population Density
-              </label>
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={overlayLayers.terrain}
-                  onChange={(e) => setOverlayLayers({...overlayLayers, terrain: e.target.checked})}
-                  className="w-3 h-3"
-                />
-                Terrain
-              </label>
-              <label className="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={overlayLayers.satellite}
-                  onChange={(e) => setOverlayLayers({...overlayLayers, satellite: e.target.checked})}
-                  className="w-3 h-3"
-                />
-                Satellite View
-              </label>
-            </div>
-          </div>
+          <Button
+            size="sm"
+            variant={drawingMode ? "default" : "outline"}
+            onClick={() => setDrawingMode(!drawingMode)}
+            className="w-full"
+          >
+            {drawingMode ? 'Drawing Active' : 'Enable Drawing'}
+          </Button>
         </Card>
+        <LayerControlPanel
+          layers={layers}
+          onToggle={handleToggleLayer}
+          onToggleAll={handleToggleAll}
+        />
       </div>
 
       <MapContainer center={center} zoom={zoom} style={{ height }} className="w-full">
@@ -222,14 +219,14 @@ export default function EnhancedGISMap({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {overlayLayers.satellite && (
+        {layers.satellite && (
           <TileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
             attribution='&copy; Esri'
           />
         )}
 
-        {overlayLayers.terrain && (
+        {layers.terrain && (
           <TileLayer
             url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
             attribution='&copy; OpenTopoMap'
@@ -237,7 +234,7 @@ export default function EnhancedGISMap({
           />
         )}
 
-        {overlayLayers.population && (
+        {layers.population && (
           <TileLayer
             url="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png"
             attribution='&copy; Stadia Maps'
@@ -247,149 +244,180 @@ export default function EnhancedGISMap({
 
         {drawingMode && <DrawingTools onDrawCreated={handleDrawCreated} />}
 
-        <LayersControl position="topright">
-          {/* Infrastructure */}
-          <LayersControl.Overlay checked name="OLTs">
-            <FeatureGroup>
-              {assetsByType.olt?.map(asset => (
-                <Marker
-                  key={asset.id}
-                  position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
-                  icon={createAssetIcon('olt', asset.status)}
-                  eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+        {/* OLTs */}
+        {layers.olts && (
+          <FeatureGroup>
+            {assetsByType.olt?.map(asset => (
+              <Marker
+                key={asset.id}
+                position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
+                icon={createAssetIcon('olt', asset.status)}
+                eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+              >
+                <Popup>
+                  <div className="text-sm">
+                    <h3 className="font-bold">{asset.name}</h3>
+                    <p>Type: OLT</p>
+                    <p>Status: {asset.status}</p>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </FeatureGroup>
+        )}
+
+        {/* ONTs */}
+        {layers.onts && (
+          <FeatureGroup>
+            {assetsByType.ont?.map(asset => (
+              <Marker
+                key={asset.id}
+                position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
+                icon={createAssetIcon('ont', asset.status)}
+                eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+              >
+                <Popup><div className="text-sm"><h3 className="font-bold">{asset.name}</h3></div></Popup>
+              </Marker>
+            ))}
+          </FeatureGroup>
+        )}
+
+        {/* Poles */}
+        {layers.poles && (
+          <FeatureGroup>
+            {assetsByType.pole?.map(asset => (
+              <Marker
+                key={asset.id}
+                position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
+                icon={createAssetIcon('pole', asset.status)}
+                eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+              >
+                <Popup><div className="text-sm"><h3 className="font-bold">{asset.name}</h3><p>Type: Pole</p></div></Popup>
+              </Marker>
+            ))}
+          </FeatureGroup>
+        )}
+
+        {/* Splitters */}
+        {layers.splitters && (
+          <FeatureGroup>
+            {assetsByType.splitter?.map(asset => (
+              <Marker
+                key={asset.id}
+                position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
+                icon={createAssetIcon('splitter', asset.status)}
+                eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+              >
+                <Popup><div className="text-sm"><h3 className="font-bold">{asset.name}</h3><p>Type: Splitter</p></div></Popup>
+              </Marker>
+            ))}
+          </FeatureGroup>
+        )}
+
+        {/* Fibre Routes */}
+        {layers.routes && (
+          <FeatureGroup>
+            {routes.map(route => {
+              const colors = { feeder: '#3b82f6', distribution: '#10b981', drop: '#f59e0b' };
+              return (
+                <Polyline
+                  key={route.id}
+                  positions={route.geometry.coordinates.map(c => [c[1], c[0]])}
+                  color={colors[route.route_type] || '#64748b'}
+                  weight={3}
+                  opacity={0.7}
                 >
                   <Popup>
                     <div className="text-sm">
-                      <h3 className="font-bold">{asset.name}</h3>
-                      <p>Type: OLT</p>
-                      <p>Status: {asset.status}</p>
+                      <h3 className="font-bold">{route.name}</h3>
+                      <p>Length: {route.length_meters}m</p>
                     </div>
                   </Popup>
-                </Marker>
-              ))}
-            </FeatureGroup>
-          </LayersControl.Overlay>
+                </Polyline>
+              );
+            })}
+          </FeatureGroup>
+        )}
 
-          <LayersControl.Overlay checked name="ONTs">
-            <FeatureGroup>
-              {assetsByType.ont?.map(asset => (
-                <Marker
-                  key={asset.id}
-                  position={[asset.geometry.coordinates[1], asset.geometry.coordinates[0]]}
-                  icon={createAssetIcon('ont', asset.status)}
-                  eventHandlers={{ click: () => onAssetClick && onAssetClick(asset) }}
+        {/* Geofences */}
+        {layers.geofences && (
+          <FeatureGroup>
+            {geofences.filter(f => f.is_active).map(fence => (
+              <Polygon
+                key={fence.id}
+                positions={fence.geometry.coordinates[0].map(c => [c[1], c[0]])}
+                fillColor="#a855f7"
+                fillOpacity={0.1}
+                color="#a855f7"
+                weight={2}
+                dashArray="5, 10"
+              >
+                <Popup>
+                  <div className="text-sm">
+                    <h3 className="font-bold text-purple-400">{fence.name}</h3>
+                    <Badge className="bg-purple-500/20 text-purple-400">{fence.fence_type}</Badge>
+                    <p className="mt-1">Trigger: {fence.trigger_on}</p>
+                  </div>
+                </Popup>
+              </Polygon>
+            ))}
+          </FeatureGroup>
+        )}
+
+        {/* Serviceability Zones */}
+        {layers.zones && (
+          <FeatureGroup>
+            {zones.map(zone => {
+              const colors = { fully_serviceable: '#10b981', limited_capacity: '#f59e0b', planned: '#3b82f6', not_serviceable: '#ef4444' };
+              return (
+                <Polygon
+                  key={zone.id}
+                  positions={zone.geometry.coordinates[0].map(c => [c[1], c[0]])}
+                  fillColor={colors[zone.serviceability_status]}
+                  fillOpacity={0.2}
+                  color={colors[zone.serviceability_status]}
+                  weight={2}
                 >
-                  <Popup><div className="text-sm"><h3 className="font-bold">{asset.name}</h3></div></Popup>
-                </Marker>
-              ))}
-            </FeatureGroup>
-          </LayersControl.Overlay>
+                  <Popup>
+                    <div className="text-sm">
+                      <h3 className="font-bold">{zone.name}</h3>
+                      <p>Status: {zone.serviceability_status}</p>
+                    </div>
+                  </Popup>
+                </Polygon>
+              );
+            })}
+          </FeatureGroup>
+        )}
 
-          {/* Routes */}
-          <LayersControl.Overlay checked name="Fibre Routes">
-            <FeatureGroup>
-              {routes.map(route => {
-                const colors = { feeder: '#3b82f6', distribution: '#10b981', drop: '#f59e0b' };
-                return (
-                  <Polyline
-                    key={route.id}
-                    positions={route.geometry.coordinates.map(c => [c[1], c[0]])}
-                    color={colors[route.route_type] || '#64748b'}
-                    weight={3}
-                    opacity={0.7}
-                  >
-                    <Popup>
-                      <div className="text-sm">
-                        <h3 className="font-bold">{route.name}</h3>
-                        <p>Length: {route.length_meters}m</p>
-                      </div>
-                    </Popup>
-                  </Polyline>
-                );
-              })}
-            </FeatureGroup>
-          </LayersControl.Overlay>
-
-          {/* Zones */}
-          <LayersControl.Overlay name="Serviceability Zones">
-            <FeatureGroup>
-              {zones.map(zone => {
-                const colors = { fully_serviceable: '#10b981', limited_capacity: '#f59e0b', planned: '#3b82f6', not_serviceable: '#ef4444' };
+        {/* Active Events */}
+        {layers.events && (
+          <FeatureGroup>
+            {events.filter(e => e.status === 'active').map(event => {
+              if (event.affected_area_polygon) {
                 return (
                   <Polygon
-                    key={zone.id}
-                    positions={zone.geometry.coordinates[0].map(c => [c[1], c[0]])}
-                    fillColor={colors[zone.serviceability_status]}
-                    fillOpacity={0.2}
-                    color={colors[zone.serviceability_status]}
+                    key={event.id}
+                    positions={event.affected_area_polygon.coordinates[0].map(c => [c[1], c[0]])}
+                    fillColor="#ef4444"
+                    fillOpacity={0.3}
+                    color="#ef4444"
                     weight={2}
+                    dashArray="5, 5"
                   >
                     <Popup>
                       <div className="text-sm">
-                        <h3 className="font-bold">{zone.name}</h3>
-                        <p>Status: {zone.serviceability_status}</p>
+                        <h3 className="font-bold text-red-600">{event.event_type}</h3>
+                        <p>{event.description}</p>
                       </div>
                     </Popup>
                   </Polygon>
                 );
-              })}
-            </FeatureGroup>
-          </LayersControl.Overlay>
-
-          {/* Geofences */}
-          <LayersControl.Overlay checked name="Geofences">
-            <FeatureGroup>
-              {geofences.filter(f => f.is_active).map(fence => (
-                <Polygon
-                  key={fence.id}
-                  positions={fence.geometry.coordinates[0].map(c => [c[1], c[0]])}
-                  fillColor="#a855f7"
-                  fillOpacity={0.1}
-                  color="#a855f7"
-                  weight={2}
-                  dashArray="5, 10"
-                >
-                  <Popup>
-                    <div className="text-sm">
-                      <h3 className="font-bold text-purple-400">{fence.name}</h3>
-                      <Badge className="bg-purple-500/20 text-purple-400">{fence.fence_type}</Badge>
-                      <p className="mt-1">Trigger: {fence.trigger_on}</p>
-                    </div>
-                  </Popup>
-                </Polygon>
-              ))}
-            </FeatureGroup>
-          </LayersControl.Overlay>
-
-          {/* Events */}
-          <LayersControl.Overlay name="Active Events">
-            <FeatureGroup>
-              {events.filter(e => e.status === 'active').map(event => {
-                if (event.affected_area_polygon) {
-                  return (
-                    <Polygon
-                      key={event.id}
-                      positions={event.affected_area_polygon.coordinates[0].map(c => [c[1], c[0]])}
-                      fillColor="#ef4444"
-                      fillOpacity={0.3}
-                      color="#ef4444"
-                      weight={2}
-                      dashArray="5, 5"
-                    >
-                      <Popup>
-                        <div className="text-sm">
-                          <h3 className="font-bold text-red-600">{event.event_type}</h3>
-                          <p>{event.description}</p>
-                        </div>
-                      </Popup>
-                    </Polygon>
-                  );
-                }
-                return null;
-              })}
-            </FeatureGroup>
-          </LayersControl.Overlay>
-        </LayersControl>
+              }
+              return null;
+            })}
+          </FeatureGroup>
+        )}
       </MapContainer>
     </div>
   );
