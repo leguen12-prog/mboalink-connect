@@ -11,6 +11,10 @@ const THRESHOLDS = {
   CRITICAL: 95,
 };
 
+// Push notifications are gated OFF until the native mobile app ships with
+// push credentials configured. Flip on via DataCapNotificationService.setPushEnabled(true).
+let pushEnabled = false;
+
 function getBillingPeriod(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 }
@@ -26,6 +30,19 @@ function round2(num) {
 }
 
 export const DataCapNotificationService = {
+
+  /**
+   * Enable/disable push delivery of data cap alerts. Push is gated off until the
+   * native mobile app is live with push credentials — flipping this on alone will
+   * queue/log push attempts which only actually deliver once credentials are set.
+   */
+  setPushEnabled(enabled) {
+    pushEnabled = !!enabled;
+  },
+
+  isPushEnabled() {
+    return pushEnabled;
+  },
 
   /**
    * Run the data cap check across all active customers.
@@ -175,7 +192,7 @@ export const DataCapNotificationService = {
       }
     }
 
-    // Log notification
+    // Log email notification
     await base44.entities.NotificationLog.create({
       notification_id: `NOTIF-${Date.now().toString().slice(-8)}-${Math.floor(Math.random() * 1000)}`,
       customer_id: customer.id,
@@ -198,6 +215,15 @@ export const DataCapNotificationService = {
       },
     });
 
+    // Send push notification (only when mobile app + credentials are in place)
+    if (pushEnabled) {
+      try {
+        await this._sendPushNotification({ customer, templateKey, lang, vars, billingPeriod, pct, plan });
+      } catch (e) {
+        // push failure must not block the email flow
+      }
+    }
+
     // Update usage record flags
     const updateData = {
       percentage_used: round2(pct),
@@ -206,6 +232,71 @@ export const DataCapNotificationService = {
     if (templateKey === 'data_cap_80') updateData.notification_80_sent = true;
     if (templateKey === 'data_cap_95') updateData.notification_95_sent = true;
     await base44.entities.DataUsage.update(usage.id, updateData);
+  },
+
+  /**
+   * Send a push alert to the customer's app account (matched by email).
+   * Gated by pushEnabled — only callable once the native mobile app + push
+   * credentials are configured. Pushes are logged as their own NotificationLog
+   * with type 'push' so email + push delivery show up separately in history.
+   */
+  async _sendPushNotification({ customer, templateKey, lang, vars, billingPeriod, pct, plan }) {
+    if (!customer.email) return;
+
+    let userId = null;
+    try {
+      const users = await base44.entities.User.filter({ email: customer.email });
+      if (users && users.length > 0) userId = users[0].id;
+    } catch (e) {
+      userId = null;
+    }
+    if (!userId) return;
+
+    const template = NotificationTemplates[templateKey];
+    const langTemplate = template[lang] || template.en;
+    const push = langTemplate.push;
+    if (!push) return;
+
+    const title = replaceTemplateVariables(push.title, vars);
+    const content = replaceTemplateVariables(push.body, vars);
+
+    let pushStatus = 'sent';
+    let pushError = null;
+    try {
+      await base44.asServiceRole.integrations.Core.SendPushNotification({
+        user_id: userId,
+        title,
+        content,
+        action_label: 'View Usage',
+        action_url: '/Settings',
+      });
+    } catch (e) {
+      pushStatus = 'failed';
+      pushError = e.message;
+    }
+
+    await base44.entities.NotificationLog.create({
+      notification_id: `NOTIF-PUSH-${Date.now().toString().slice(-8)}-${Math.floor(Math.random() * 1000)}`,
+      customer_id: customer.id,
+      type: 'push',
+      template_key: templateKey,
+      language: lang,
+      subject: title,
+      body: content,
+      recipient: `user:${userId}`,
+      status: pushStatus,
+      sent_at: new Date().toISOString(),
+      error_message: pushError,
+      metadata: {
+        customer_id: customer.id,
+        billing_period: billingPeriod,
+        data_used_gb: vars.dataUsed,
+        data_cap_gb: vars.dataCap,
+        percentage: round2(pct),
+        plan_code: plan.plan_code,
+        user_id: userId,
+      },
+    });
   },
 
   /**

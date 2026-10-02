@@ -6,13 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { AlertTriangle, CheckCircle2, Bell, RefreshCw, Mail, TrendingUp } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Bell, RefreshCw, Mail, TrendingUp, Smartphone } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function DataCapNotificationsPanel() {
   const [running, setRunning] = useState(false);
   const [lastResult, setLastResult] = useState(null);
   const [autoRun, setAutoRun] = useState(true);
+  const [pushEnabled, setPushEnabledState] = useState(DataCapNotificationService.isPushEnabled());
+
+  const handleTogglePush = (enabled) => {
+    DataCapNotificationService.setPushEnabled(enabled);
+    setPushEnabledState(enabled);
+    if (enabled) {
+      toast.info('Push alerts armed — they will deliver once your mobile app + push credentials are configured');
+    }
+  };
 
   const { data: summary, isLoading: summaryLoading, refetch: refetchSummary } = useQuery({
     queryKey: ['data-cap-summary'],
@@ -64,11 +73,19 @@ export default function DataCapNotificationsPanel() {
             <p className="text-sm text-slate-400 mt-1">
               Automatically alert customers at 80% and 95% of their monthly data cap
             </p>
+            <p className="text-xs text-slate-500 mt-1">
+              Email alerts are active. Push alerts require the native mobile app + push credentials to deliver.
+            </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-2">
               <span className="text-sm text-slate-400">Auto-run</span>
               <Switch checked={autoRun} onCheckedChange={setAutoRun} />
+            </div>
+            <div className="flex items-center gap-2">
+              <Smartphone className="w-4 h-4 text-slate-400" />
+              <span className="text-sm text-slate-400">Push alerts</span>
+              <Switch checked={pushEnabled} onCheckedChange={handleTogglePush} />
             </div>
             <Button
               onClick={() => handleRunCheck(false)}
@@ -192,7 +209,15 @@ export default function DataCapNotificationsPanel() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-1.5">
+                      {log.type === 'push' ? (
+                        <Smartphone className="w-3 h-3 text-slate-400" />
+                      ) : (
+                        <Mail className="w-3 h-3 text-slate-400" />
+                      )}
+                      <span className="text-xs text-slate-400">{log.type}</span>
+                    </div>
                     <p className="text-xs text-slate-400">{log.recipient}</p>
                     <Badge variant={log.status === 'sent' ? 'default' : 'destructive'} className="text-xs">
                       {log.status}
